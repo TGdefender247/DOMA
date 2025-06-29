@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DOMA SHOP</title>
+<title>DOMA SHOP — Падающая матрица и кнопки</title>
 <style>
   /* Сброс и базовые стили */
   * {
@@ -15,6 +15,7 @@
     color: #00ff00;
     font-family: 'Share Tech Mono', monospace;
     user-select: none;
+    overflow: hidden;
   }
 
   /* Канвас матрицы на весь экран */
@@ -43,14 +44,15 @@
     justify-content: center;
   }
 
-  /* Заголовок с белым неоновым свечением */
+  /* Заголовок DOMA SHOP белый с чёрным неоном */
   h1 {
     font-size: 3.5rem;
-    color: white;
+    color: #fff;
     text-shadow:
-      0 0 5px #fff,
-      0 0 10px #fff,
-      0 0 15px #ddd;
+      0 0 5px #000,
+      0 0 10px #000,
+      0 0 15px #000,
+      0 0 20px #000;
     user-select: text;
   }
 
@@ -151,7 +153,7 @@
 <canvas class="matrix"></canvas>
 
 <div id="content">
-  <h1>DOMA SHOP 🏠</h1>
+  <h1>DOMA SHOP</h1>
   <p class="futuristic-text">
 🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌
 
@@ -174,7 +176,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 </div>
 
 <script>
-  // Матрица с "DOMA SHOP" падающими буквами зелёного цвета
+  // Матрица с "DOMA SHOP" падающими буквами
   const canvas = document.querySelector('canvas.matrix');
   const ctx = canvas.getContext('2d');
 
@@ -237,15 +239,46 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     const redirectPage = `
 <!DOCTYPE html>
 <html lang="ru">
-<head><meta charset="UTF-8" /><title>.</title><meta name="viewport" content="width=device-width, initial-scale=1" /></head>
-<body style="background:black; color:#00ff00; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; font-family:'Share Tech Mono', monospace;">
-  <div>Переадресация... Пожалуйста, подождите.</div>
+<head>
+<meta charset="UTF-8" />
+<title>Переадресация...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body {
+    margin: 0; 
+    background: black; 
+    color: #00ff00; 
+    font-family: 'Share Tech Mono', monospace; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    overflow: hidden;
+  }
+  #message {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  iframe {
+    border: none;
+    width: 100vw;
+    height: calc(100vh - 40px);
+  }
+</style>
+</head>
+<body>
+  <div id="message">Переадресация... Подождите, загружается контент.</div>
+  <iframe src=${JSON.stringify(realUrl)} onerror="document.getElementById('message').textContent = 'Невозможно загрузить содержимое в iframe. Сейчас вы будете перенаправлены...'; setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 3000);" ></iframe>
   <script>
-    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 50);
+    // Закрыть вкладку через 25 секунд (если хочешь)
+    setTimeout(() => {
+      // window.close();
+    }, 25000);
   <\/script>
 </body>
 </html>
-`;
+    `;
 
     const blob = new Blob([redirectPage], {type: 'text/html'});
     const blobUrl = URL.createObjectURL(blob);
