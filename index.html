@@ -4,64 +4,68 @@
   <meta charset="UTF-8" />
   <title>DOMA SHOP</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
+      padding: 0;
       background: black;
       color: white;
       font-family: 'Share Tech Mono', monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      overflow-x: hidden;
-      user-select: none;
-      text-align: center;
+      overflow: hidden;
     }
 
     canvas.matrix {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       z-index: 0;
     }
 
-    h1 {
-      margin-top: 30px;
-      font-size: 24px;
-      color: white;
-      text-shadow: 0 0 6px white;
-      z-index: 2;
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
     }
 
-    .description {
-      font-size: 12px;
-      max-width: 90vw;
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: white;
+      text-shadow: 0 0 8px white;
+    }
+
+    .desc {
+      font-size: 11px;
+      max-width: 95%;
       white-space: pre-wrap;
-      margin: 15px 0 30px;
-      z-index: 2;
+      margin-bottom: 20px;
+      color: #ccc;
     }
 
     .buttons {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 10px;
-      z-index: 2;
+      justify-content: center;
+      margin-top: 10px;
     }
 
     .btn {
       padding: 10px 20px;
-      font-size: 14px;
       border: 2px solid white;
       background: transparent;
       color: white;
-      border-radius: 6px;
       cursor: pointer;
+      font-size: 14px;
       transition: 0.3s;
     }
 
@@ -71,86 +75,103 @@
     }
 
     .footer {
-      margin-top: 30px;
-      font-size: 11px;
       color: red;
-      z-index: 2;
+      font-size: 11px;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
   <canvas class="matrix"></canvas>
+  <div class="content">
+    <h1>Добро пожаловать в магазин DOMA SHOP 🏠</h1>
+    <div class="desc">
+🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌
 
-  <h1>Добро пожаловать в магазин DOMA SHOP 🏠</h1>
-  <div class="description">
-🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌  
 🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают  
 ⚡️ СЕРВИС НА ГРАНИ ФАНТАСТИКИ — доставка быстрее скорости мысли  
 💎 КРИПТОНСКОЕ КАЧЕСТВО — прочнее алмазов, ярче сверхновой  
 
-НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨  
-🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.  
-*(Это не шопинг. Это квантовый скачок в вашей реальности.)*
-  </div>
+НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨
 
-  <div class="buttons" id="button-container"></div>
-  <div class="footer">На вашем устройстве обязательно должен быть установлен Telegram.</div>
+🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.
+
+*(Это не шопинг. Это квантовый скачок в вашей реальности.)*  
+
+P.S. Забудьте слово "невозможно". Вы теперь с нами.
+    </div>
+
+    <div class="buttons" id="button-box"></div>
+    <div class="footer">На вашем устройстве обязательно должен быть установлен Telegram</div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    // Зашифрованные ссылки (AES CBC)
-    const encryptedLinks = {
+    // Matrix effect
+    const canvas = document.querySelector(".matrix");
+    const ctx = canvas.getContext("2d");
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const fontSize = 12;
+    const columns = Math.floor(width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        drops[i] = (drops[i] * fontSize > height && Math.random() > 0.975) ? 0 : drops[i] + 1;
+      }
+    }
+
+    setInterval(drawMatrix, 33);
+
+    // Links encrypted
+    const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
+
+    const links = {
       "БОТ": "glGMjJbYgx6xl2ks5iPy/walMDH6CyjN3gCzD0uzB50FIfQ03cljJsKKgcXAUuu6",
       "НОВОСТИ": "pjtlaep3wy7xZwg1grSSMagCDW66/JW1HSQXcP4rGLw8EkZSwnRxgxCyQZDQecER",
       "ОТЗЫВЫ": "+XkSI1Ekwq3Siw8NXCNFmrPJjMhDexXqorKOmkdsNKgCYgJbdrkZDgJjQv4Of7xw",
       "ЧАТ": "taxgcSOy7GtJUzjYHcNusDy/6CahGrmhqep9QhASnXMg+i57v879kGFUA8F5DvaF"
     };
 
-    const container = document.getElementById("button-container");
+    const fakeLinks = [];
+    for (let i = 0; i < 500; i++) {
+      fakeLinks.push("https://proxy" + i + ".fake");
+    }
 
-    for (const [label, enc] of Object.entries(encryptedLinks)) {
+    const buttonBox = document.getElementById("button-box");
+    for (const [label, enc] of Object.entries(links)) {
       const btn = document.createElement("button");
       btn.className = "btn";
       btn.textContent = label;
+      btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
       btn.onclick = () => {
-        const encoded = encodeURIComponent(enc);
-        window.location.href = redirect.html?link=${encoded};
+        const raw = CryptoJS.enc.Base64.parse(enc);
+        const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
+        const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
+        const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
+          iv: iv,
+          mode: CryptoJS.mode.CBC,
+          padding: CryptoJS.pad.Pkcs7
+        });
+        const url = decrypted.toString(CryptoJS.enc.Utf8);
+        if (url) window.location.href = url;
+        else alert("Ошибка перехода.");
       };
-      container.appendChild(btn);
+      buttonBox.appendChild(btn);
     }
-
-    // Белая матрица
-    const canvas = document.querySelector(".matrix");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const fontSize = 12;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(1);
-
-    ctx.font = fontSize + "px 'Share Tech Mono'";
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#fff";
-      for (let i = 0; i < drops.length; i++) {
-        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-    setInterval(drawMatrix, 50);
-
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
   </script>
 </body>
 </html>
