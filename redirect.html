@@ -1,51 +1,32 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Переход…</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background: black;
-      color: white;
-      font-family: 'Share Tech Mono', monospace;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      height: 100vh;
-      padding: 20px;
-    }
-  </style>
+  <title>Redirecting...</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
-<body>
-  <div>
-    <h2>🚀 Переходим в зашифрованную сеть DOMA...</h2>
-    <p>Подключение к каналу...</p>
-  </div>
-
+<body style="background:black; color:white; text-align:center; font-family:monospace; padding:50px;">
+  <h1>⏳ Перенаправление…</h1>
   <script>
+    const params = new URLSearchParams(window.location.search);
+    const enc = params.get("link");
     const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
-    const urlParams = new URLSearchParams(window.location.search);
-    const enc = urlParams.get("link");
 
     try {
       const raw = CryptoJS.enc.Base64.parse(decodeURIComponent(enc));
       const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
       const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
+
       const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
         iv: iv,
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
       });
-      const finalUrl = decrypted.toString(CryptoJS.enc.Utf8);
 
-      setTimeout(() => {
-        window.location.href = finalUrl;
-      }, 800); // 0.8 сек задержка для "эффекта"
-    } catch (err) {
-      document.body.innerHTML = "<h2 style='color:red'>Ошибка при расшифровке ссылки</h2>";
+      const link = decrypted.toString(CryptoJS.enc.Utf8);
+      window.location.href = link;
+    } catch (e) {
+      document.body.innerHTML = "<h1>Ошибка расшифровки ссылки</h1>";
     }
   </script>
 </body>
