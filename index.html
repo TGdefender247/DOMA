@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>DOMA SHOP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -16,10 +16,10 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
+      padding: 16px;
       text-align: center;
-      overflow: hidden;
+      overflow-x: hidden;
       user-select: none;
-      padding: 10px;
     }
 
     canvas.matrix {
@@ -27,33 +27,50 @@
       top: 0;
       left: 0;
       z-index: -1;
-      display: block;
     }
 
     h1 {
-      font-size: 18px;
+      font-size: 22px;
+      margin: 20px 0 10px;
       color: white;
-      margin: 16px 0 8px;
       text-shadow: 0 0 6px white;
     }
 
     .tagline {
-      font-size: 9.5px;
-      max-width: 95vw;
+      font-size: 11px;
+      line-height: 1.4;
+      max-width: 90vw;
       white-space: pre-wrap;
-      line-height: 1.35;
       margin-bottom: 24px;
     }
 
-    #shadow-host {
+    #button-container {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 10px;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      font-size: 13px;
+      border: 2px solid white;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      font-family: 'Share Tech Mono', monospace;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: white;
+      color: black;
     }
 
     .footer {
-      margin-top: 20px;
+      margin-top: 24px;
       font-size: 10px;
       color: red;
     }
@@ -63,6 +80,7 @@
   <canvas class="matrix"></canvas>
 
   <h1>Добро пожаловать в магазин DOMA SHOP 🏠</h1>
+
   <div class="tagline">
 🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌  
 🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают  
@@ -71,48 +89,53 @@
 
 НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨  
 🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.  
-(Это не шопинг. Это квантовый скачок в вашей реальности.)
+*(Это не шопинг. Это квантовый скачок в вашей реальности.)*
 
 P.S. Забудьте слово "невозможно". Вы теперь с нами.
   </div>
 
-  <div id="shadow-host"></div>
+  <div id="button-container"></div>
 
-  <div class="footer">На вашем устройстве обязательно должен быть установлен Telegram</div>
+  <div class="footer">На вашем устройстве обязательно должен быть установлен Telegram.</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    // MATRIX
-    const canvas = document.querySelector('.matrix');
-    const ctx = canvas.getContext('2d');
+    // Матрица
+    const canvas = document.querySelector(".matrix");
+    const ctx = canvas.getContext("2d");
+
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
 
-    const columns = Math.floor(window.innerWidth / 10);
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    const columns = Math.floor(window.innerWidth / 12);
     const drops = Array(columns).fill(1);
-    ctx.font = "10px 'Share Tech Mono'";
+    ctx.font = "12px 'Share Tech Mono'";
+
     function drawMatrix() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#ffffff"; // Белый цвет
+      ctx.fillStyle = "#ffffff";
       ctx.shadowColor = "#ffffff";
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = 6;
+
       for (let i = 0; i < drops.length; i++) {
         const char = String.fromCharCode(0x30A0 + Math.random() * 96);
-        ctx.fillText(char, i * 10, drops[i] * 10);
-        if (drops[i] * 10 > canvas.height && Math.random() > 0.975) {
+        ctx.fillText(char, i * 12, drops[i] * 12);
+        if (drops[i] * 12 > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
         drops[i]++;
       }
     }
+
     setInterval(drawMatrix, 50);
 
-    // КНОПКИ
+    // Зашифрованные ссылки (бот, новости, отзывы, чат)
     const encryptedLinks = {
       "БОТ": "glGMjJbYgx6xl2ks5iPy/walMDH6CyjN3gCzD0uzB50FIfQ03cljJsKKgcXAUuu6",
       "НОВОСТИ": "pjtlaep3wy7xZwg1grSSMagCDW66/JW1HSQXcP4rGLw8EkZSwnRxgxCyQZDQecER",
@@ -120,36 +143,17 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       "ЧАТ": "taxgcSOy7GtJUzjYHcNusDy/6CahGrmhqep9QhASnXMg+i57v879kGFUA8F5DvaF"
     };
 
-    const host = document.getElementById("shadow-host");
-    const shadow = host.attachShadow({ mode: "open" });
+    const container = document.getElementById("button-container");
 
     for (const [label, enc] of Object.entries(encryptedLinks)) {
       const btn = document.createElement("button");
+      btn.className = "btn";
       btn.textContent = label;
-      btn.style.cssText = `
-        padding: 8px 18px;
-        font-size: 11px;
-        background: transparent;
-        border: 1.5px solid white;
-        color: white;
-        cursor: pointer;
-        font-family: 'Share Tech Mono', monospace;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-      `;
-      btn.onmouseenter = () => {
-        btn.style.background = "#ffffff";
-        btn.style.color = "#000";
-      };
-      btn.onmouseleave = () => {
-        btn.style.background = "transparent";
-        btn.style.color = "#fff";
-      };
       btn.onclick = () => {
         const linkParam = encodeURIComponent(enc);
         window.location.href = redirect.html?link=${linkParam};
       };
-      shadow.appendChild(btn);
+      container.appendChild(btn);
     }
   </script>
 </body>
