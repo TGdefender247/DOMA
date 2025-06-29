@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>ABYSS RED OVERRIDE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -52,6 +52,23 @@
       font-size: 16px;
       user-select: text;
     }
+
+    /* Стили для кнопок внутри shadow DOM (придётся продублировать) */
+    #shadow-host button {
+      margin: 8px;
+      padding: 12px 24px;
+      border: 2px solid #00ff00;
+      background: transparent;
+      color: #00ff00;
+      font-size: 18px;
+      cursor: pointer;
+      font-family: 'Share Tech Mono', monospace;
+      transition: 0.3s;
+    }
+    #shadow-host button:hover {
+      background: #00ff00;
+      color: black;
+    }
   </style>
 </head>
 <body>
@@ -89,7 +106,7 @@
     }
     setInterval(drawMatrix, 50);
 
-    // TELEGRAM ENCRYPTED LINKS
+    // Зашифрованные ссылки
     const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
 
     const encryptedLinks = {
@@ -104,63 +121,88 @@
       fakeLinks.push("https://join-proxy" + i + ".fake");
     }
 
+    // Создаём open shadow DOM (чтобы кнопки реально появились)
     const host = document.getElementById("shadow-host");
-    const shadow = host.attachShadow({ mode: "closed" });
+    const shadow = host.attachShadow({ mode: "open" });
 
     for (const [label, enc] of Object.entries(encryptedLinks)) {
       const btn = document.createElement("button");
       btn.textContent = label;
-      btn.setAttribute("style", "margin:8px;padding:12px 24px;border:2px solid #00ff00;background:transparent;color:#00ff00;font-size:18px;cursor:pointer;font-family:'Share Tech Mono', monospace;transition:0.3s;");
-      
+
+      // В title рандомная фейковая ссылка
       const fake = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
       btn.title = fake;
 
-      btn.onmouseenter = () => { btn.style.background = "#00ff00"; btn.style.color = "black"; };
-      btn.onmouseleave = () => { btn.style.background = "transparent"; btn.style.color = "#00ff00"; };
-      
       btn.onclick = () => {
-        const raw = CryptoJS.enc.Base64.parse(enc);
-        const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
-        const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
-        const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
-          iv: iv,
-          mode: CryptoJS.mode.CBC,
-          padding: CryptoJS.pad.Pkcs7,
-        });
-        const link = decrypted.toString(CryptoJS.enc.Utf8);
-        window.location.href = link;
+        try {
+          const raw = CryptoJS.enc.Base64.parse(enc);
+          const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
+          const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
+          const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7,
+          });
+          const link = decrypted.toString(CryptoJS.enc.Utf8);
+          if(link) window.location.href = link;
+          else alert("Ошибка расшифровки ссылки");
+        } catch(e) {
+          alert("Ошибка при переходе");
+          console.error(e);
+        }
       };
 
+      // Добавляем кнопку в shadow DOM
       shadow.appendChild(btn);
     }
 
-    // BLOCK F12, COPY, ETC
+    // Защита от F12, Ctrl+Shift+I, Ctrl+U и контекстного меню
     document.addEventListener("keydown", e => {
-      if (e.key === "F12"  (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i")  (e.ctrlKey && e.key.toLowerCase() === "u")) {
-        e.preventDefault(); alert("Доступ запрещён");
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
+        (e.ctrlKey && e.key.toLowerCase() === "u")
+      ) {
+        e.preventDefault();
+        alert("Доступ запрещён");
       }
     });
     document.body.oncontextmenu = e => e.preventDefault();
     document.body.oncopy = e => e.preventDefault();
     document.body.oncut = e => e.preventDefault();
 
-    // DINOSAUR ANIMATION
+    // Примитивная анимация динозавра
     const dinoCanvas = document.getElementById("dino");
     const dCtx = dinoCanvas.getContext("2d");
     let frame = 0;
     function drawDino() {
       dCtx.clearRect(0, 0, dinoCanvas.width, dinoCanvas.height);
       dCtx.fillStyle = "#00ff00";
-      dCtx.beginPath(); dCtx.ellipse(80, 40, 40, 30, 0, 0, Math.PI * 2); dCtx.fill();
-      dCtx.beginPath(); dCtx.ellipse(120, 35, 20, 25, 0, 0, Math.PI * 2); dCtx.fill();
+      dCtx.beginPath();
+      dCtx.ellipse(80, 40, 40, 30, 0, 0, Math.PI * 2);
+      dCtx.fill();
+      dCtx.beginPath();
+      dCtx.ellipse(120, 35, 20, 25, 0, 0, Math.PI * 2);
+      dCtx.fill();
       dCtx.fillStyle = "black";
-      dCtx.beginPath(); dCtx.ellipse(130, 30, 5, 7, 0, 0, Math.PI * 2); dCtx.fill();
+      dCtx.beginPath();
+      dCtx.ellipse(130, 30, 5, 7, 0, 0, Math.PI * 2);
+      dCtx.fill();
       dCtx.fillStyle = "#00ff00";
       const legOffset = frame % 20 < 10 ? 5 : -5;
-      dCtx.beginPath(); dCtx.ellipse(60, 70 + legOffset, 10, 15, 0, 0, Math.PI * 2); dCtx.fill();
-      dCtx.beginPath(); dCtx.ellipse(100, 70 - legOffset, 10, 15, 0, 0, Math.PI * 2); dCtx.fill();
+      dCtx.beginPath();
+      dCtx.ellipse(60, 70 + legOffset, 10, 15, 0, 0, Math.PI * 2);
+      dCtx.fill();
+      dCtx.beginPath();
+      dCtx.ellipse(100, 70 - legOffset, 10, 15, 0, 0, Math.PI * 2);
+      dCtx.fill();
       const tailOffset = frame % 40 < 20 ? 10 : -10;
-      dCtx.beginPath(); dCtx.moveTo(40, 40); dCtx.lineTo(10, 30 + tailOffset); dCtx.lineTo(20, 50 + tailOffset); dCtx.closePath(); dCtx.fill();
+      dCtx.beginPath();
+      dCtx.moveTo(40, 40);
+      dCtx.lineTo(10, 30 + tailOffset);
+      dCtx.lineTo(20, 50 + tailOffset);
+      dCtx.closePath();
+      dCtx.fill();
       frame++;
     }
     setInterval(drawDino, 150);
