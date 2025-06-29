@@ -1,152 +1,48 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>DOMA SHOP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-    body {
-      margin: 0;
-      background: black;
-      color: #0f0;
-      font-family: 'Share Tech Mono', monospace;
-      overflow: hidden;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 15px;
-      box-sizing: border-box;
-    }
-    #header {
-      color: #0f0;
-      font-weight: bold;
-      font-size: 22px;
-      margin-bottom: 10px;
-      text-align: center;
-      user-select: text;
-      text-shadow: 0 0 5px #00ff00;
-    }
-    #telegram-warning {
-      margin-top: 10px;
-      font-weight: 900;
-      font-size: 18px;
-      color: red;
-      user-select: text;
-      text-shadow: 0 0 3px black;
-      text-align: center;
-    }
-    canvas.matrix {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      display: block;
-    }
-    #buttons-container {
-      margin-top: 40px;
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-      max-width: 500px;
-    }
-    #buttons-container button {
-      background: transparent;
-      border: 2px solid #0f0;
-      color: #0f0;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 18px;
-      padding: 10px 25px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      user-select: none;
-      border-radius: 5px;
-      text-shadow: 0 0 6px #0f0;
-    }
-    #buttons-container button:hover {
-      background: #0f0;
-      color: black;
-      text-shadow: none;
-    }
-    /* Matrix text style for falling effect */
-    .matrix-text {
-      font-weight: bold;
-      font-size: 24px;
-      letter-spacing: 2px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DOMA SHOP - Безопасные переходы</title>
+<style>
+  body {
+    background: black;
+    color: white;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  #container {
+    display: flex;
+    gap: 20px;
+  }
+  button {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 12px 28px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    text-shadow: 0 0 5px white;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: white;
+    color: black;
+    box-shadow: 0 0 15px white;
+  }
+</style>
 </head>
 <body>
 
-  <div id="header">DOMA SHOP</div>
-
-  <canvas class="matrix"></canvas>
-
-  <div id="buttons-container"></div>
-
-  <div id="telegram-warning">На вашем устройстве обязательно должен быть установлен Telegram</div>
+<div id="container"></div>
 
 <script>
-  // --- MATRIX EFFECT ---
-  const canvas = document.querySelector('.matrix');
-  const ctx = canvas.getContext('2d');
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  const fontSize = 18;
-  ctx.font = fontSize + "px 'Share Tech Mono'";
-  const columns = Math.floor(canvas.width / fontSize);
-
-  // Каждый столбец хранит Y-координату для падающего текста
-  const drops = new Array(columns).fill(1);
-
-  // Текст для падающих символов
-  const matrixText = "DOMA SHOP";
-
-  // Функция отрисовки
-  function drawMatrix() {
-    // Полупрозрачный черный фон (следы)
-    ctx.fillStyle = "rgba(0, 0, 0, 0.07)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#0f0"; // зелёный неон
-    ctx.shadowColor = "#0f0";
-    ctx.shadowBlur = 10;
-
-    for(let i = 0; i < drops.length; i++) {
-      // Символ из matrixText, циклически
-      const text = matrixText[i % matrixText.length];
-      const x = i * fontSize;
-      const y = drops[i] * fontSize;
-
-      ctx.fillText(text, x, y);
-
-      // Если вышли за низ - начать сверху с небольшим рандомом
-      if(y > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-
-      drops[i]++;
-    }
-  }
-
-  setInterval(drawMatrix, 50);
-
-  // --- КНОПКИ И ЛОГИКА РЕДИРЕКТА ---
-
-  const container = document.getElementById('buttons-container');
-
-  // Реальные ссылки Telegram (секреты)
+  // Настоящие ссылки
   const realLinks = {
     "БОТ": "https://t.me/Doma111_bot",
     "НОВОСТИ": "https://t.me/+r_YNyC6D2BljMzcy",
@@ -154,67 +50,76 @@
     "ЧАТ": "https://t.me/+2h-o-940Sj42Yjdh"
   };
 
-  // Фейковые ссылки для отображения в title и в адресной строке
-  const fakeLinks = [];
-  for(let i=1; i<=1000; i++) {
-    fakeLinks.push(`https://join-proxy${i}.fake`);
+  // Генерация фейковых ссылок для отображения
+  function generateFakeUrl(label) {
+    const randomId = Math.random().toString(36).substring(2, 10);
+    return https://fake-domain.fake/${label.toLowerCase()}_${randomId};
   }
-  // Функция открытия с фейковым URL и редиректом
-  function openWithFakeUrl(realUrl) {
-    const redirectPage = `
-      <!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>Redirecting</title>
-      <style>body{background:black;color:#0f0;font-family:'Share Tech Mono', monospace;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;text-align:center;}</style>
-      </head><body>
-      <div>Переадресация... Пожалуйста, подождите.</div>
-      <script>
-        setTimeout(() => {
-          location.replace(${JSON.stringify(realUrl)});
-        }, 200);
-      </script>
-      </body></html>`;
 
-    const blob = new Blob([redirectPage], {type: 'text/html'});
+  const container = document.getElementById('container');
+
+  function openFakeAndRedirect(realUrl, fakeUrl) {
+    // Создаём HTML страницы с редиректом
+    const redirectHTML = `
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Переадресация</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { background:black; color:#0f0; font-family: monospace; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;}
+</style>
+</head>
+<body>
+  <div>Переадресация... Пожалуйста, подождите.</div>
+  <script>
+    // Через 50 мс редирект на реальную ссылку
+    setTimeout(() => {
+      window.location.replace(${JSON.stringify(realUrl)});
+    }, 50);
+  <\/script>
+</body>
+</html>
+`;
+
+    const blob = new Blob([redirectHTML], { type: 'text/html' });
     const blobUrl = URL.createObjectURL(blob);
 
-    window.open(blobUrl, '_blank', 'noopener,noreferrer');
+    // Открываем новую вкладку с фейковым URL (blobUrl), но в адресной строке покажем фейковую ссылку (fakeUrl) через history API
+    // Запускаем эту вкладку с фейковым URL, и сразу меняем URL в истории на фейковый (fakeUrl)
+    // Для этого нужно сначала открыть пустую вкладку, потом уже написать туда скрипт
+    const newWin = window.open('', '_blank', 'noopener,noreferrer');
+
+    if (!newWin) {
+      alert('Пожалуйста, разрешите открывать новые окна для перехода.');
+      return;
+    }
+
+    // Записываем в новую вкладку документ с редиректом
+    newWin.document.write(redirectHTML);
+    newWin.document.close();
+
+    // Через 10 мс меняем URL в истории на фейковый (без перезагрузки страницы)
+    setTimeout(() => {
+      try {
+        newWin.history.replaceState(null, '', fakeUrl);
+      } catch(e) {
+        // Иногда браузеры блокируют — ничего страшного
+        console.warn('Не удалось заменить URL в истории', e);
+      }
+    }, 10);
   }
 
-  // Создаём кнопки
   Object.entries(realLinks).forEach(([label, realUrl]) => {
     const btn = document.createElement('button');
+    const fakeUrl = generateFakeUrl(label);
+
     btn.textContent = label;
-    btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+    btn.title = fakeUrl;
 
-    btn.onclick = () => openWithFakeUrl(realUrl);
-
-    btn.addEventListener('mouseenter', () => {
-      btn.style.background = '#0f0';
-      btn.style.color = 'black';
-      btn.style.textShadow = 'none';
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.background = 'transparent';
-      btn.style.color = '#0f0';
-      btn.style.textShadow = '0 0 6px #0f0';
-    });
+    btn.onclick = () => openFakeAndRedirect(realUrl, fakeUrl);
 
     container.appendChild(btn);
   });
-
-  // Запреты клавиш и контекстного меню
-  document.addEventListener('keydown', e => {
-    if (
-      e.key === 'F12' ||
-      (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
-      (e.ctrlKey && e.key.toLowerCase() === 'u')
-    ) {
-      e.preventDefault();
-      alert('Доступ запрещён');
-    }
-  });
-  document.body.oncontextmenu = e => e.preventDefault();
-  document.body.oncopy = e => e.preventDefault();
-  document.body.oncut = e => e.preventDefault();
 </script>
 
 </body>
