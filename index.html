@@ -14,7 +14,7 @@
     color: #00ff00;
     font-family: 'Share Tech Mono', monospace;
     user-select: none;
-    overflow: hidden;
+    overflow-x: hidden;
   }
   canvas.matrix {
     position: fixed; top: 0; left: 0;
@@ -132,6 +132,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 </div>
 
 <script>
+  // Матрица с "DOMA SHOP"
   const canvas = document.querySelector('canvas.matrix');
   const ctx = canvas.getContext('2d');
 
@@ -160,7 +161,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       let charIndex = Math.abs(drops[i]) % wordLen;
       let text = word.charAt(charIndex);
       ctx.fillText(text, i * 14, drops[i] * 14);
-      if(drops[i] * 14 > height && Math.random() > 0.975) drops[i] = 0;
+     if(drops[i] * 14 > height && Math.random() > 0.975) drops[i] = 0;
       drops[i]++;
     }
   }
@@ -173,72 +174,22 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     "ЧАТ": "https://t.me/+2h-o-940Sj42Yjdh"
   };
 
-  const fakeLinks = [];
-  for(let i=1; i<=1000; i++) {
-    fakeLinks.push("https://join-proxy" + i + ".fake");
-  }
-
   const container = document.getElementById('container');
 
-  function openWithFakeUrl(realUrl) {
-    const redirectPage = `
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8" />
-<title>Переадресация...</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  body {
-    margin: 0;
-    background: black;
-    color: #00ff00;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
-  #message {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  iframe {
-    border: none;
-    width: 100vw;
-    height: calc(100vh - 40px);
-  }
-</style>
-</head>
-<body>
-  <div id="message">Переадресация... Подождите, загружается контент.</div>
-  <iframe src=${JSON.stringify(realUrl)} 
-    onerror="document.getElementById('message').textContent = 'Невозможно загрузить iframe. Перенаправление...'; 
-             setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 5000);" 
-  ></iframe>
-  <script>
-    // Если iframe загрузился, то редирект НЕ произойдёт
-    // Через 25 секунд всё равно делаем редирект на случай, если iframe заблокирован браузером
-    setTimeout(() => {
-      location.href = ${JSON.stringify(realUrl)};
-    }, 25000);
-  <\/script>
-</body>
-</html>
-`;
-    const blob = new Blob([redirectPage], {type: 'text/html'});
-    const blobUrl = URL.createObjectURL(blob);
-    window.open(blobUrl, '_blank', 'noopener,noreferrer');
+  function openTelegramLink(realUrl) {
+    // Подменяем URL в адресной строке (фейковый, например точка)
+    history.replaceState(null, '', '.');
+
+    // Переходим на реальный Telegram URL без открытия нового окна
+    location.replace(realUrl);
   }
 
   Object.entries(realLinks).forEach(([label, realUrl]) => {
     const btn = document.createElement('button');
     btn.textContent = label;
-    btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+    btn.title = "Ссылка скрыта";
 
-    btn.onclick = () => openWithFakeUrl(realUrl);
+    btn.onclick = () => openTelegramLink(realUrl);
 
     btn.addEventListener('mouseenter', () => {
       btn.style.background = 'white';
@@ -254,6 +205,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     container.appendChild(btn);
   });
 
+  // Запрет горячих клавиш для разработчика
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
@@ -264,10 +216,10 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       alert('Доступ запрещён');
     }
   });
-
   document.body.oncontextmenu = e => e.preventDefault();
   document.body.oncopy = e => e.preventDefault();
   document.body.oncut = e => e.preventDefault();
+
 </script>
 
 </body>
