@@ -3,111 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <title>DOMA SHOP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
       background: black;
-      color: #fff;
+      color: #aaffaa;
       font-family: 'Share Tech Mono', monospace;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       min-height: 100vh;
       text-align: center;
-      overflow-x: hidden;
       user-select: none;
-      padding: 20px 10px 40px;
+      padding: 20px;
     }
-    canvas.matrix {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      width: 100vw;
-      height: 100vh;
-      display: block;
+    h1 {
+      font-weight: bold;
+      font-size: 1.8rem;
+      color: #aaffaa;
+      text-shadow: 0 0 4px #000000;
+      margin-bottom: 1rem;
     }
-    h1.white-neon {
-      color: #fff;
-      font-weight: 900;
-      font-size: 36px;
-      margin-bottom: 15px;
-      /* Слабое свечения */
-      text-shadow:
-        0 0 3px #fff,
-        0 0 7px #fff;
-    }
-    .desc.orange-neon {
-      color: orange;
-      font-weight: 700;
-      font-size: 14px;
-      white-space: pre-wrap;
-      max-width: 700px;
-      margin: 0 auto 30px auto;
-      line-height: 1.3;
-      /* Слабое свечения */
-      text-shadow:
-        0 0 2px orange,
-        0 0 5px orange;
-      user-select: text;
+    .description {
+      color: #aaffaa;
+      font-size: 0.85rem;
+      font-weight: 600;
+      max-width: 480px;
+      line-height: 1.4;
+      margin: 0 auto 3rem auto;
+      white-space: pre-line;
+      text-shadow: 0 0 3px #000000;
     }
     #telegram-warning {
-      color: orange;
-      font-weight: 900;
-      font-size: 18px;
-      margin-bottom: 25px;
-      user-select: text;
-      text-shadow:
-        0 0 3px orange,
-        0 0 7px orange;
-    }
-    #shadow-host button {
-      margin: 8px;
-      padding: 14px 28px;
-      border: 2px solid #fff;
-      background: transparent;
-      color: #fff;
-      font-size: 18px;
+      color: #ff3333;
       font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      text-shadow: 0 0 3px #000000;
+    }
+    #buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      max-width: 480px;
+      width: 100%;
+    }
+    button {
+      flex: 1 1 40%;
+      margin: 6px;
+      padding: 14px 24px;
+      border: 2px solid #aaffaa;
+      background: transparent;
+      color: #aaffaa;
+      font-size: 1.1rem;
       cursor: pointer;
       font-family: 'Share Tech Mono', monospace;
       transition: 0.3s;
       border-radius: 6px;
-      min-width: 130px;
       user-select: none;
-      text-shadow:
-        0 0 3px #fff,
-        0 0 7px #fff;
+      text-shadow: 0 0 4px #000000;
+      min-width: 120px;
     }
-    #shadow-host button:hover {
-      background: #fff;
+    button:hover {
+      background: #aaffaa;
       color: black;
       text-shadow: none;
     }
-    @media (max-width: 768px) {
-      h1.white-neon {
-        font-size: 28px;
+    @media(max-width: 480px) {
+      h1 {
+        font-size: 1.4rem;
       }
-      .desc.orange-neon {
-        font-size: 12px;
+      .description {
+        font-size: 0.75rem;
         max-width: 90vw;
       }
-      #shadow-host button {
-        font-size: 16px;
-        padding: 12px 22px;
-        min-width: 110px;
+      button {
+        font-size: 1rem;
+        padding: 12px 18px;
+        flex: 1 1 100%;
+        min-width: auto;
       }
     }
   </style>
 </head>
 <body>
-  <canvas class="matrix"></canvas>
+  <h1>Добро пожаловать в магазин DOMA SHOP 🏠</h1>
 
-  <h1 class="white-neon">Добро пожаловать в магазин DOMA SHOP 🏠</h1>
-  <div class="desc orange-neon">
+  <div class="description">
 🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌  
 
 🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают  
@@ -123,47 +109,13 @@
 P.S. Забудьте слово "невозможно". Вы теперь с нами.
   </div>
 
-  <div id="telegram-warning">На вашем устройстве обязательно должен быть установлен Telegram.</div>
+  <div id="telegram-warning">На вашем устройстве обязательно должен быть установлен Telegram</div>
 
-  <div id="shadow-host"></div>
+  <div id="buttons-container"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    // Матрица белая, неоновое слабое свечение
-    const canvas = document.querySelector('.matrix');
-    const ctx = canvas.getContext('2d');
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      ctx.font = fontSize + "px 'Share Tech Mono'";
-    }
-    window.addEventListener('resize', resizeCanvas);
-
-    const fontSize = 14;
-    let letters = Array(Math.floor(window.innerWidth / fontSize)).fill(0);
-
-    ctx.font = fontSize + "px 'Share Tech Mono'";
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.07)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#fff";
-
-      letters.forEach((y, i) => {
-        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-        const x = i * fontSize;
-        ctx.fillText(text, x, y);
-        letters[i] = y > canvas.height ? 0 : y + fontSize;
-      });
-    }
-
-    resizeCanvas();
-    setInterval(drawMatrix, 50);
-
-    // Шифрованные ссылки
     const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
-
     const encryptedLinks = {
       "БОТ": "glGMjJbYgx6xl2ks5iPy/walMDH6CyjN3gCzD0uzB50FIfQ03cljJsKKgcXAUuu6",
       "НОВОСТИ": "pjtlaep3wy7xZwg1grSSMagCDW66/JW1HSQXcP4rGLw8EkZSwnRxgxCyQZDQecER",
@@ -171,131 +123,71 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       "ЧАТ": "taxgcSOy7GtJUzjYHcNusDy/6CahGrmhqep9QhASnXMg+i57v879kGFUA8F5DvaF"
     };
 
-    // Генерируем фейковые ссылки для title и url (но url с уникальным id)
-    const fakeBase = "https://join-proxy.fake/";
-    function getFakeUrl() {
-      return fakeBase + Math.floor(Math.random() * 100000);
+    const fakeLinks = [];
+    for(let i=1; i<=1000; i++) {
+      fakeLinks.push("https://join-proxy" + i + ".fake");
     }
 
-    // Создаем shadow DOM для кнопок
-    const host = document.getElementById("shadow-host");
-    const shadow = host.attachShadow({ mode: "open" });
+    const container = document.getElementById('buttons-container');
 
-    // Кнопки и обработка кликов
-    for (const [label, enc] of Object.entries(encryptedLinks)) {
-      const btn = document.createElement("button");
+    function decryptLink(enc) {
+      const raw = CryptoJS.enc.Base64.parse(enc);
+      const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0,4));
+      const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
+      const decrypted = CryptoJS.AES.decrypt({ciphertext: ct}, key, {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+      return decrypted.toString(CryptoJS.enc.Utf8);
+    }
+
+    function openFakeRedirect(enc) {
+      const realLink = decryptLink(enc);
+      if (!realLink) {
+        alert("Ошибка перехода");
+        return;
+      }
+      const html = `
+        <html><head><meta charset="UTF-8"><title>Redirecting...</title>
+          <script>
+            setTimeout(() => { window.location.href = "${realLink}"; }, 150);
+          </script>
+          <style>body{font-family: 'Share Tech Mono', monospace; display:flex; justify-content:center; align-items:center; height:100vh; background:black; color:#aaffaa;}</style>
+        </head>
+        <body>Переадресация...</body></html>`;
+      const blob = new Blob([html], {type: 'text/html'});
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    }
+
+    Object.entries(encryptedLinks).forEach(([label, enc]) => {
+      const btn = document.createElement('button');
       btn.textContent = label;
+      btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
-      // Стили для кнопки
-      btn.style.margin = "8px";
-      btn.style.padding = "14px 28px";
-      btn.style.border = "2px solid #fff";
-      btn.style.background = "transparent";
-      btn.style.color = "#fff";
-      btn.style.fontSize = "18px";
-      btn.style.fontWeight = "700";
-      btn.style.cursor = "pointer";
-      btn.style.fontFamily = "'Share Tech Mono', monospace";
-      btn.style.transition = "0.3s";
-      btn.style.borderRadius = "6px";
-      btn.style.minWidth = "130px";
-      btn.style.userSelect = "none";
-      btn.style.textShadow = "0 0 3px #fff, 0 0 7px #fff";
-
-      // Случайный fake url для title и url (в title для пользователя)
-      const fake = getFakeUrl();
-      btn.title = fake;
-
-      btn.addEventListener("mouseenter", () => {
-        btn.style.background = "#fff";
-        btn.style.color = "black";
-        btn.style.textShadow = "none";
+      btn.addEventListener('mouseenter', () => {
+        btn.style.background = '#aaffaa';
+        btn.style.color = 'black';
+        btn.style.textShadow = 'none';
       });
-      btn.addEventListener("mouseleave", () => {
-        btn.style.background = "transparent";
-        btn.style.color = "#fff";
-        btn.style.textShadow = "0 0 3px #fff, 0 0 7px #fff";
+      btn.addEventListener('mouseleave', () => {
+        btn.style.background = 'transparent';
+        btn.style.color = '#aaffaa';
+        btn.style.textShadow = '0 0 4px #000000';
       });
 
-      btn.onclick = () => {
-        try {
-          // Расшифровка ссылки
-          const raw = CryptoJS.enc.Base64.parse(enc);
-          const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
-          const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
-          const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7,
-          });
-          const realLink = decrypted.toString(CryptoJS.enc.Utf8);
+      btn.onclick = () => openFakeRedirect(enc);
 
-          if (!realLink) throw new Error("Ошибка расшифровки");
+      container.appendChild(btn);
+    });
 
-          // Создаем фейковый URL с уникальным id
-          const fakeUrl = getFakeUrl();
-
-          // Открываем новую вкладку с нашим "фейковым" URL, где через JS происходит редирект на реальный URL
-          const redirectPage = `
-            <!DOCTYPE html>
-            <html lang="ru">
-            <head>
-              <meta charset="UTF-8" />
-              <title>Redirecting...</title>
-              <script>
-                setTimeout(() => {
-                  window.location.href = "${realLink}";
-                }, 100);
-              <\/script>
-              <style>
-                body {
-                  background: black;
-                  color: white;
-                  font-family: monospace;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  height: 100vh;
-                  margin: 0;
-                }
-              </style>
-            </head>
-            <body>
-              Переадресация...
-            </body>
-            </html>
-          `;
-
-          // Открываем новое окно с поддельным URL (но реально без сервера подделать нельзя,
-          // поэтому используем data URL с уникальным названием в заголовке)
-          const blob = new Blob([redirectPage], {type: 'text/html'});
-          const blobUrl = URL.createObjectURL(blob);
-
-          window.open(blobUrl, "_blank");
-        } catch (e) {
-          alert("Ошибка при переходе");
-          console.error(e);
-        }
-      };
-
-      shadow.appendChild(btn);
-    }
-
-    // Блокировки
-    document.addEventListener("keydown", (e) => {
-      if (
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
-        (e.ctrlKey && e.key.toLowerCase() === "u")
-      ) {
+    // Блокировки клавиш и меню
+    document.addEventListener('keydown', e => {
+      if(e.key === 'F12'  (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')  (e.ctrlKey && e.key.toLowerCase() === 'u')){
         e.preventDefault();
-        alert("Доступ запрещён");
+        alert('Доступ запрещён');
       }
     });
-    document.body.oncontextmenu = (e) => e.preventDefault();
-    document.body.oncopy = (e) => e.preventDefault();
-    document.body.oncut = (e) => e.preventDefault();
-
+    document.body.oncontextmenu = e => e.preventDefault();
+    document.body.oncopy = e => e.preventDefault();
+    document.body.oncut = e => e.preventDefault();
   </script>
 </body>
 </html>
