@@ -31,29 +31,30 @@
     }
 
     h1 {
-      font-size: 14px;
+      font-size: 18px;
       color: white;
-      margin: 16px 0 6px;
+      margin: 16px 0 8px;
+      text-shadow: 0 0 6px white;
     }
 
     .tagline {
-      font-size: 8px;
-      max-width: 90vw;
+      font-size: 9.5px;
+      max-width: 95vw;
       white-space: pre-wrap;
-      line-height: 1.3;
-      margin-bottom: 20px;
+      line-height: 1.35;
+      margin-bottom: 24px;
     }
 
     #shadow-host {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 6px;
+      gap: 10px;
     }
 
     .footer {
       margin-top: 20px;
-      font-size: 9px;
+      font-size: 10px;
       color: red;
     }
   </style>
@@ -81,7 +82,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    // MATRIX BACKGROUND
+    // MATRIX
     const canvas = document.querySelector('.matrix');
     const ctx = canvas.getContext('2d');
     function resizeCanvas() {
@@ -91,22 +92,27 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const letters = Array(Math.floor(window.innerWidth / 10)).fill(0);
+    const columns = Math.floor(window.innerWidth / 10);
+    const drops = Array(columns).fill(1);
     ctx.font = "10px 'Share Tech Mono'";
     function drawMatrix() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#ffffff";
-      letters.forEach((y, i) => {
-        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-        const x = i * 10;
-        ctx.fillText(text, x, y);
-        letters[i] = y > canvas.height ? 0 : y + 10;
-      });
+      ctx.fillStyle = "#ffffff"; // Белый цвет
+      ctx.shadowColor = "#ffffff";
+      ctx.shadowBlur = 8;
+      for (let i = 0; i < drops.length; i++) {
+        const char = String.fromCharCode(0x30A0 + Math.random() * 96);
+        ctx.fillText(char, i * 10, drops[i] * 10);
+        if (drops[i] * 10 > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
     }
     setInterval(drawMatrix, 50);
 
-    // КНОПКИ И ПЕРЕХОД
+    // КНОПКИ
     const encryptedLinks = {
       "БОТ": "glGMjJbYgx6xl2ks5iPy/walMDH6CyjN3gCzD0uzB50FIfQ03cljJsKKgcXAUuu6",
       "НОВОСТИ": "pjtlaep3wy7xZwg1grSSMagCDW66/JW1HSQXcP4rGLw8EkZSwnRxgxCyQZDQecER",
@@ -121,17 +127,18 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       const btn = document.createElement("button");
       btn.textContent = label;
       btn.style.cssText = `
-        padding: 6px 12px;
-        font-size: 10px;
+        padding: 8px 18px;
+        font-size: 11px;
         background: transparent;
-        border: 1px solid white;
+        border: 1.5px solid white;
         color: white;
         cursor: pointer;
         font-family: 'Share Tech Mono', monospace;
-        transition: 0.3s;
+        border-radius: 6px;
+        transition: all 0.3s ease;
       `;
       btn.onmouseenter = () => {
-        btn.style.background = "#fff";
+        btn.style.background = "#ffffff";
         btn.style.color = "#000";
       };
       btn.onmouseleave = () => {
