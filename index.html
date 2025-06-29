@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DOMA SHOP</title>
+<title>DOMA SHOP — Darknet стиль</title>
 <style>
   /* Сброс и базовые стили */
   * {
@@ -219,7 +219,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   setInterval(draw, 50);
 
-  // Реальные и фейковые ссылки (добавлена кнопка ОПЕРАТОР)
+  // Реальные и фейковые ссылки (с оператором)
   const realLinks = {
     "БОТ": "tg://resolve?domain=Doma111_bot",
     "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
@@ -236,10 +236,8 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
   const container = document.getElementById('container');
 
   function openWithFakeUrl(realUrl) {
-    // Создаём фейковую ссылку из массива
     const fakeUrl = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
-    // Открываем новую вкладку с фейковой ссылкой (для скрытия реальной)
     const redirectPage = `
 <!DOCTYPE html>
 <html lang="ru">
@@ -247,7 +245,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 <body style="background:#0a0a0a; color:#b289ff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; font-family:'Share Tech Mono', monospace;">
   <div>Переадресация... Пожалуйста, подождите.</div>
   <script>
-    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 25000);
+    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 10000);
   <\/script>
 </body>
 </html>
@@ -256,7 +254,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     const blob = new Blob([redirectPage], {type: 'text/html'});
     const blobUrl = URL.createObjectURL(blob);
 
-    // Открываем вкладку с фейковой ссылкой (адрес в браузере не показывает реальный)
+    // Открываем фейковую страницу с фейковым URL (адрес в строке не меняется)
     window.open(blobUrl, '_blank', 'noopener,noreferrer');
   }
 
