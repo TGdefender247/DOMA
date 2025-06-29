@@ -138,8 +138,8 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 </div>
 
 <script>
-  // Создаём blob с фейковой промежуточной страницей, которая через 5 сек редиректит на реальный tg://ссылку
   function createRedirectPage(realUrl) {
+    // Промежуточная страница с редиректом через 5 сек на realUrl
     const html = `
 <!DOCTYPE html>
 <html lang="ru">
@@ -155,13 +155,13 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     return new Blob([html], {type: 'text/html'});
   }
 
-  // Матрица с "DOMA SHOP" падающими буквами в фиолетовом цвете
+  // Матрица с "DOMA SHOP" падающими буквами
   const canvas = document.querySelector('canvas.matrix');
- const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
 
   let width, height;
   let columns;
-  let drops = [];
+ let drops = [];
 
   const word = "DOMA SHOP ";
   const wordLen = word.length;
@@ -199,13 +199,12 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   setInterval(draw, 50);
 
-  // Реальные ссылки Telegram
   const realLinks = {
-    "БОТ": "tg://resolve?domain=Doma111_bot",
-    "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
-    "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
-    "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh",
-    "ОПЕРАТОР": "tg://user?id=7970987069" // прямой переход
+    "БОТ": "tg://resolve?domain=+Doma111_bot",
+    "НОВОСТИ": "tg://resolve?domain=+r_YNyC6D2BljMzcy",
+    "ОТЗЫВЫ": "tg://resolve?domain=+6LPNuuSTKzMyMmJi",
+    "ЧАТ": "tg://resolve?domain=+2h-o-940Sj42Yjdh",
+    "ОПЕРАТОР": "tg://user?id=7970987069"
   };
 
   const fakeLinks = [
@@ -216,11 +215,10 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   const container = document.getElementById('container');
 
-  // Для всех кроме ОПЕРАТОРА — открываем фейковую страницу (blob), потом редирект через 5 сек
   function openWithFakeRedirect(realUrl) {
     const blob = createRedirectPage(realUrl);
     const blobUrl = URL.createObjectURL(blob);
-    window.open(blobUrl, '_blank', 'noopener,noreferrer');
+    window.location.href = blobUrl;
   }
 
   Object.entries(realLinks).forEach(([label, realUrl]) => {
@@ -230,10 +228,9 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
     btn.onclick = () => {
       if(label === "ОПЕРАТОР") {
-        // Прямой переход без промежуточной страницы
-        window.location.href = realUrl;
+        window.location.href = realUrl; // прямой переход
       } else {
-        openWithFakeRedirect(realUrl);
+        openWithFakeRedirect(realUrl); // через промежуточную blob-страницу
       }
     };
 
@@ -251,7 +248,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     container.appendChild(btn);
   });
 
-  // Защита от клавиш разработчика и копирования
+  // Защита от копирования, контекстного меню и devtools
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
