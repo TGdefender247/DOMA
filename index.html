@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>DOMA SHOP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
-    /* Общие стили */
     body {
       margin: 0;
       background: black;
@@ -15,108 +14,76 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       min-height: 100vh;
+      text-align: center;
       overflow: hidden;
       user-select: none;
-      padding: 20px 10px 40px 10px;
-      box-sizing: border-box;
+      padding: 10px;
     }
 
-    /* Матрица */
     canvas.matrix {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
       z-index: -1;
       display: block;
-      background: black;
     }
 
-    /* Заголовок */
-    h1.main-title {
-      font-size: 2.2rem;
-      text-align: center;
-      margin: 0 0 20px 0;
+    h1 {
+      font-size: 14px;
       color: white;
+      margin: 16px 0 6px;
+    }
+
+    .tagline {
+      font-size: 8px;
+      max-width: 90vw;
+      white-space: pre-wrap;
       line-height: 1.3;
-      user-select: text;
-      max-width: 900px;
+      margin-bottom: 20px;
     }
 
-    /* Подзаголовок (красный текст внизу) */
-    .bottom-text {
-      color: #ff2222;
-      font-size: 1rem;
-      margin-top: 30px;
-      max-width: 900px;
-      line-height: 1.4;
-      white-space: pre-line;
-      user-select: text;
-      text-align: center;
-    }
-
-    /* Контейнер кнопок */
     #shadow-host {
-      margin-top: 20px;
       display: flex;
-      gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
-      max-width: 900px;
+      gap: 6px;
     }
 
-    /* Кнопки (будут в Shadow DOM, но стили можно повторить) */
-    button {
-      margin: 0;
-      padding: 12px 24px;
-      border: 2px solid white;
-      background: transparent;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      font-family: 'Share Tech Mono', monospace;
-      transition: background 0.3s, color 0.3s, border-color 0.3s;
-      user-select: none;
-      border-radius: 6px;
-      min-width: 110px;
-      text-align: center;
-    }
-    button:hover {
-      background: #00ff00;
-      color: black;
-      border-color: #00ff00;
+    .footer {
+      margin-top: 20px;
+      font-size: 9px;
+      color: red;
     }
   </style>
 </head>
 <body>
   <canvas class="matrix"></canvas>
 
-  <h1 class="main-title">
-    Добро пожаловать в магазин DOMA SHOP 🏠<br><br>
-    🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌<br><br>
-    🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают<br>
-    ⚡️ СЕРВИС НА ГРАНИ ФАНТАСТИКИ — доставка быстрее скорости мысли<br>
-    💎 КРИПТОНСКОЕ КАЧЕСТВО — прочнее алмазов, ярче сверхновой<br><br>
-    НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨<br><br>
-    🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.<br><br>
-    <small><i>(Это не шопинг. Это квантовый скачок в вашей реальности.)</i></small><br><br>
-    P.S. Забудьте слово "невозможно". Вы теперь с нами.
-  </h1>
+  <h1>Добро пожаловать в магазин DOMA SHOP 🏠</h1>
+  <div class="tagline">
+🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌  
+🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают  
+⚡️ СЕРВИС НА ГРАНИ ФАНТАСТИКИ — доставка быстрее скорости мысли  
+💎 КРИПТОНСКОЕ КАЧЕСТВО — прочнее алмазов, ярче сверхновой  
+
+НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨  
+🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.  
+(Это не шопинг. Это квантовый скачок в вашей реальности.)
+
+P.S. Забудьте слово "невозможно". Вы теперь с нами.
+  </div>
 
   <div id="shadow-host"></div>
 
-  <div class="bottom-text">
-    <br>— ВНИМАНИЕ: На вашем устройстве должен быть установлен Telegram для корректной работы ссылок. —
-  </div>
+  <div class="footer">На вашем устройстве обязательно должен быть установлен Telegram</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    // Матрица белым цветом
+    // MATRIX BACKGROUND
     const canvas = document.querySelector('.matrix');
     const ctx = canvas.getContext('2d');
-
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -124,28 +91,22 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const fontSize = 12;
-    const lettersCount = Math.floor(canvas.width / fontSize);
-    const letters = Array(lettersCount).fill(0);
-    ctx.font = fontSize + "px 'Share Tech Mono'";
-
+    const letters = Array(Math.floor(window.innerWidth / 10)).fill(0);
+    ctx.font = "10px 'Share Tech Mono'";
     function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "white";
-
-      letters.forEach((y_pos, index) => {
+      ctx.fillStyle = "#ffffff";
+      letters.forEach((y, i) => {
         const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-        const x_pos = index * fontSize;
-        ctx.fillText(text, x_pos, y_pos);
-        letters[index] = y_pos > canvas.height ? 0 : y_pos + fontSize;
+        const x = i * 10;
+        ctx.fillText(text, x, y);
+        letters[i] = y > canvas.height ? 0 : y + 10;
       });
     }
     setInterval(drawMatrix, 50);
 
-    // AES ключ (оставь как есть)
-    const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
-
+    // КНОПКИ И ПЕРЕХОД
     const encryptedLinks = {
       "БОТ": "glGMjJbYgx6xl2ks5iPy/walMDH6CyjN3gCzD0uzB50FIfQ03cljJsKKgcXAUuu6",
       "НОВОСТИ": "pjtlaep3wy7xZwg1grSSMagCDW66/JW1HSQXcP4rGLw8EkZSwnRxgxCyQZDQecER",
@@ -153,75 +114,36 @@
       "ЧАТ": "taxgcSOy7GtJUzjYHcNusDy/6CahGrmhqep9QhASnXMg+i57v879kGFUA8F5DvaF"
     };
 
-    const fakeLinks = [];
-    for (let i = 1; i <= 1000; i++) {
-      fakeLinks.push("https://join-proxy" + i + ".fake");
-    }
-
-    // Shadow DOM с режимом "закрыт"
     const host = document.getElementById("shadow-host");
-    const shadow = host.attachShadow({ mode: "closed" });
+    const shadow = host.attachShadow({ mode: "open" });
 
     for (const [label, enc] of Object.entries(encryptedLinks)) {
       const btn = document.createElement("button");
       btn.textContent = label;
-
-      // Псевдо title — рандомная фейковая ссылка
-      const fake = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
-      btn.title = fake;
-
+      btn.style.cssText = `
+        padding: 6px 12px;
+        font-size: 10px;
+        background: transparent;
+        border: 1px solid white;
+        color: white;
+        cursor: pointer;
+        font-family: 'Share Tech Mono', monospace;
+        transition: 0.3s;
+      `;
       btn.onmouseenter = () => {
-        btn.style.background = "#00ff00";
-        btn.style.color = "black";
-        btn.style.borderColor = "#00ff00";
+        btn.style.background = "#fff";
+        btn.style.color = "#000";
       };
       btn.onmouseleave = () => {
         btn.style.background = "transparent";
-        btn.style.color = "white";
-        btn.style.borderColor = "white";
+        btn.style.color = "#fff";
       };
-
       btn.onclick = () => {
-        try {
-          const raw = CryptoJS.enc.Base64.parse(enc);
-          const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
-          const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
-          const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7,
-          });
-          const link = decrypted.toString(CryptoJS.enc.Utf8);
-          if (!link) {
-            alert("Ошибка расшифровки ссылки");
-            return;
-          }
-          const encodedLink = btoa(link);
-          window.location.href = redirect.html?link=${encodedLink};
-        } catch (e) {
-          alert("Ошибка при переходе");
-          console.error(e);
-        }
+        const linkParam = encodeURIComponent(enc);
+        window.location.href = redirect.html?link=${linkParam};
       };
-
       shadow.appendChild(btn);
     }
-
-    // Блокировка F12, Ctrl+Shift+I, Ctrl+U и контекстного меню
-    document.addEventListener("keydown", (e) => {
-      if (
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
-        (e.ctrlKey && e.key.toLowerCase() === "u")
-      ) {
-        e.preventDefault();
-        alert("Доступ запрещён");
-      }
-    });
-
-    document.body.oncontextmenu = (e) => e.preventDefault();
-    document.body.oncopy = (e) => e.preventDefault();
-    document.body.oncut = (e) => e.preventDefault();
   </script>
 </body>
 </html>
