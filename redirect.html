@@ -1,75 +1,51 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<title>Redirecting...</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-<style>
-  body {
-    margin: 0;
-    background: black;
-    color: white;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    user-select: none;
-    text-align: center;
-    padding: 10px;
-  }
-  .message {
-    font-size: 9px;
-    max-width: 100vw;
-    line-height: 1.2;
-    word-wrap: break-word;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Переход…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100vh;
+      padding: 20px;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
-  <div class="message" id="message">
-    Переадресация... Пожалуйста, подождите
+  <div>
+    <h2>🚀 Переходим в зашифрованную сеть DOMA...</h2>
+    <p>Подключение к каналу...</p>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
     const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
+    const urlParams = new URLSearchParams(window.location.search);
+    const enc = urlParams.get("link");
 
-    function getParameterByName(name) {
-      const url = new URL(window.location.href);
-      return url.searchParams.get(name);
-    }
+    try {
+      const raw = CryptoJS.enc.Base64.parse(decodeURIComponent(enc));
+      const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
+      const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
+      const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      const finalUrl = decrypted.toString(CryptoJS.enc.Utf8);
 
-    function decryptLink(encodedLink) {
-      try {
-        const raw = CryptoJS.enc.Base64.parse(encodedLink);
-        const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
-        const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
-        const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
-          iv: iv,
-          mode: CryptoJS.mode.CBC,
-          padding: CryptoJS.pad.Pkcs7
-        });
-        const link = decrypted.toString(CryptoJS.enc.Utf8);
-        return link;
-      } catch (e) {
-        return null;
-      }
-    }
-
-    const encodedLink = getParameterByName('link');
-    if (!encodedLink) {
-      document.getElementById('message').textContent = 'Ошибка: ссылка не найдена';
-    } else {
-      const link = decryptLink(encodedLink);
-      if (!link) {
-        document.getElementById('message').textContent = 'Ошибка: не удалось расшифровать ссылку';
-      } else {
-        setTimeout(() => {
-          window.location.replace(link);
-        }, 1200);
-      }
+      setTimeout(() => {
+        window.location.href = finalUrl;
+      }, 800); // 0.8 сек задержка для "эффекта"
+    } catch (err) {
+      document.body.innerHTML = "<h2 style='color:red'>Ошибка при расшифровке ссылки</h2>";
     }
   </script>
 </body>
