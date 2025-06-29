@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -37,18 +41,19 @@
     }
 
     h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: white;
-      text-shadow: 0 0 8px white;
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: orange;
+      font-weight: bold;
+      text-shadow: 0 0 10px orange;
     }
 
     .desc {
-      font-size: 11px;
+      font-size: 14px;
       max-width: 95%;
       white-space: pre-wrap;
-      margin-bottom: 20px;
-      color: #ccc;
+      margin-bottom: 30px;
+      color: #eee;
     }
 
     .buttons {
@@ -60,12 +65,13 @@
     }
 
     .btn {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: 2px solid white;
       background: transparent;
       color: white;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: bold;
       transition: 0.3s;
     }
 
@@ -76,8 +82,25 @@
 
     .footer {
       color: red;
-      font-size: 11px;
-      margin-top: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 24px;
+      }
+      .desc {
+        font-size: 12px;
+      }
+      .btn {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+      .footer {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -107,22 +130,24 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    // Matrix effect
+    // Матрица
     const canvas = document.querySelector(".matrix");
     const ctx = canvas.getContext("2d");
 
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
     const fontSize = 12;
-    const columns = Math.floor(width / fontSize);
+    const columns = Math.floor(window.innerWidth / fontSize);
     const drops = Array(columns).fill(1);
 
     function drawMatrix() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, width, height);
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = "#ffffff";
       ctx.font = fontSize + "px monospace";
@@ -130,13 +155,13 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       for (let i = 0; i < drops.length; i++) {
         const text = String.fromCharCode(0x30A0 + Math.random() * 96);
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        drops[i] = (drops[i] * fontSize > height && Math.random() > 0.975) ? 0 : drops[i] + 1;
+        drops[i] = (drops[i] * fontSize > canvas.height && Math.random() > 0.975) ? 0 : drops[i] + 1;
       }
     }
 
     setInterval(drawMatrix, 33);
 
-    // Links encrypted
+    // Telegram кнопки
     const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
 
     const links = {
@@ -147,7 +172,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     };
 
     const fakeLinks = [];
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 1000; i++) {
       fakeLinks.push("https://proxy" + i + ".fake");
     }
 
