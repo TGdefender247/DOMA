@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DOMA SHOP</title>
+<title>DOMA SHOP — Darknet стиль</title>
 <style>
   * {
     margin: 0; padding: 0; box-sizing: border-box;
@@ -138,27 +138,28 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 </div>
 
 <script>
-  // Функция создания blob-URL с промежуточной страницей (фейковой)
+  // Создаём blob с фейковой промежуточной страницей, которая через 5 сек редиректит на реальный tg://ссылку
   function createRedirectPage(realUrl) {
-    const redirectPage = `
+    const html = `
 <!DOCTYPE html>
 <html lang="ru">
 <head><meta charset="UTF-8" /><title>Переадресация...</title><meta name="viewport" content="width=device-width, initial-scale=1" /></head>
 <body style="background:#0a0a0a; color:#b289ff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; font-family:'Share Tech Mono', monospace;">
   <div>Переадресация... Пожалуйста, подождите.</div>
   <script>
-    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 10000);
+    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 5000);
   <\/script>
 </body>
 </html>
 `;
-    return new Blob([redirectPage], {type: 'text/html'});
+    return new Blob([html], {type: 'text/html'});
   }
 
   // Матрица с "DOMA SHOP" падающими буквами в фиолетовом цвете
   const canvas = document.querySelector('canvas.matrix');
-  const ctx = canvas.getContext('2d');
- let width, height;
+ const ctx = canvas.getContext('2d');
+
+  let width, height;
   let columns;
   let drops = [];
 
@@ -204,7 +205,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
     "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
     "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh",
-    "ОПЕРАТОР": "tg://user?id=7970987069"
+    "ОПЕРАТОР": "tg://user?id=7970987069" // прямой переход
   };
 
   const fakeLinks = [
@@ -215,11 +216,10 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   const container = document.getElementById('container');
 
-  function openWithFakeUrl(realUrl) {
-    const fakeUrl = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+  // Для всех кроме ОПЕРАТОРА — открываем фейковую страницу (blob), потом редирект через 5 сек
+  function openWithFakeRedirect(realUrl) {
     const blob = createRedirectPage(realUrl);
     const blobUrl = URL.createObjectURL(blob);
-    // Открываем промежуточную страницу с фейковым URL (через fakeUrl в title)
     window.open(blobUrl, '_blank', 'noopener,noreferrer');
   }
 
@@ -228,7 +228,14 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     btn.textContent = label;
     btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
-    btn.onclick = () => openWithFakeUrl(realUrl);
+    btn.onclick = () => {
+      if(label === "ОПЕРАТОР") {
+        // Прямой переход без промежуточной страницы
+        window.location.href = realUrl;
+      } else {
+        openWithFakeRedirect(realUrl);
+      }
+    };
 
     btn.addEventListener('mouseenter', () => {
       btn.style.background = '#b289ff';
