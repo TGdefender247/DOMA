@@ -24,7 +24,7 @@
       font-weight: bold;
       font-size: 1.8rem;
       color: #aaffaa;
-      text-shadow: 0 0 4px #000000;
+      text-shadow: 0 0 6px #000000;
       margin-bottom: 1rem;
     }
     .description {
@@ -35,14 +35,16 @@
       line-height: 1.4;
       margin: 0 auto 3rem auto;
       white-space: pre-line;
-      text-shadow: 0 0 3px #000000;
+      text-shadow: 0 0 4px #000000;
+      user-select: text;
     }
     #telegram-warning {
       color: #ff3333;
       font-weight: 700;
       font-size: 1.3rem;
       margin-bottom: 25px;
-      text-shadow: 0 0 3px #000000;
+      text-shadow: 0 0 4px #000000;
+      user-select: text;
     }
     #buttons-container {
       display: flex;
@@ -123,6 +125,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       "ЧАТ": "taxgcSOy7GtJUzjYHcNusDy/6CahGrmhqep9QhASnXMg+i57v879kGFUA8F5DvaF"
     };
 
+    // Генерируем фейковые ссылки для показа в тултипах и адресной строке (фальшивый URL будет открываться)
     const fakeLinks = [];
     for(let i=1; i<=1000; i++) {
       fakeLinks.push("https://join-proxy" + i + ".fake");
@@ -144,17 +147,19 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
         alert("Ошибка перехода");
         return;
       }
+      // Создаем HTML с фейковой ссылкой в адресной строке и автоматическим редиректом
       const html = `
-        <html><head><meta charset="UTF-8"><title>Redirecting...</title>
+        <html lang="ru"><head><meta charset="UTF-8" /><title>Переадресация...</title>
           <script>
             setTimeout(() => { window.location.href = "${realLink}"; }, 150);
           </script>
-          <style>body{font-family: 'Share Tech Mono', monospace; display:flex; justify-content:center; align-items:center; height:100vh; background:black; color:#aaffaa;}</style>
+          <style>body{font-family: 'Share Tech Mono', monospace; display:flex; justify-content:center; align-items:center; height:100vh; background:black; color:#aaffaa; margin:0;}</style>
         </head>
-        <body>Переадресация...</body></html>`;
+        <body>Переадресация...</body>
+        </html>`;
       const blob = new Blob([html], {type: 'text/html'});
-      const url = URL.createObjectURL(blob);
-      window.open(url, "_blank");
+      const fakeUrl = URL.createObjectURL(blob);
+      window.open(fakeUrl, '_blank', 'noopener,noreferrer');
     }
 
     Object.entries(encryptedLinks).forEach(([label, enc]) => {
@@ -178,9 +183,9 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       container.appendChild(btn);
     });
 
-    // Блокировки клавиш и меню
+    // Защита от F12, Ctrl+Shift+I, Ctrl+U и контекстного меню
     document.addEventListener('keydown', e => {
-      if(e.key === 'F12'  (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')  (e.ctrlKey && e.key.toLowerCase() === 'u')){
+      if (e.key === 'F12'  (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')  (e.ctrlKey && e.key.toLowerCase() === 'u')) {
         e.preventDefault();
         alert('Доступ запрещён');
       }
