@@ -26,6 +26,7 @@
       top: 0;
       left: 0;
       z-index: -1;
+      display: block;
     }
 
     h1 {
@@ -52,23 +53,6 @@
       font-size: 16px;
       user-select: text;
     }
-
-    /* Стили для кнопок внутри shadow DOM (придётся продублировать) */
-    #shadow-host button {
-      margin: 8px;
-      padding: 12px 24px;
-      border: 2px solid #00ff00;
-      background: transparent;
-      color: #00ff00;
-      font-size: 18px;
-      cursor: pointer;
-      font-family: 'Share Tech Mono', monospace;
-      transition: 0.3s;
-    }
-    #shadow-host button:hover {
-      background: #00ff00;
-      color: black;
-    }
   </style>
 </head>
 <body>
@@ -89,19 +73,29 @@
     // MATRIX BACKGROUND
     const canvas = document.querySelector('.matrix');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const letters = Array(256).join("01").split("");
+
+    // Устанавливаем размер канваса и обновляем при ресайзе
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const letters = Array(Math.floor(canvas.width / 12)).fill(0);
     const fontSize = 12;
+    ctx.font = fontSize + "px 'Share Tech Mono'";
+
     function drawMatrix() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "#0F0";
+
       letters.forEach((y_pos, index) => {
-        const text = String.fromCharCode(3e4 + Math.random() * 33);
+        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
         const x_pos = index * fontSize;
         ctx.fillText(text, x_pos, y_pos);
-        letters[index] = y_pos > canvas.height + Math.random() * 1e4 ? 0 : y_pos + fontSize;
+        letters[index] = y_pos > canvas.height ? 0 : y_pos + fontSize;
       });
     }
     setInterval(drawMatrix, 50);
@@ -121,17 +115,38 @@
       fakeLinks.push("https://join-proxy" + i + ".fake");
     }
 
-    // Создаём open shadow DOM (чтобы кнопки реально появились)
+    // Используем open shadow DOM для кнопок
     const host = document.getElementById("shadow-host");
     const shadow = host.attachShadow({ mode: "open" });
 
+    // Создаём кнопки
     for (const [label, enc] of Object.entries(encryptedLinks)) {
       const btn = document.createElement("button");
       btn.textContent = label;
 
-      // В title рандомная фейковая ссылка
+      // Добавляем стили для кнопки
+      btn.style.margin = "8px";
+      btn.style.padding = "12px 24px";
+      btn.style.border = "2px solid #00ff00";
+      btn.style.background = "transparent";
+      btn.style.color = "#00ff00";
+      btn.style.fontSize = "18px";
+      btn.style.cursor = "pointer";
+      btn.style.fontFamily = "'Share Tech Mono', monospace";
+      btn.style.transition = "0.3s";
+
+      // Псевдо title — рандомная фейковая ссылка
       const fake = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
       btn.title = fake;
+
+      btn.addEventListener("mouseenter", () => {
+        btn.style.background = "#00ff00";
+        btn.style.color = "black";
+      });
+      btn.addEventListener("mouseleave", () => {
+        btn.style.background = "transparent";
+        btn.style.color = "#00ff00";
+      });
 
       btn.onclick = () => {
         try {
@@ -144,20 +159,19 @@
             padding: CryptoJS.pad.Pkcs7,
           });
           const link = decrypted.toString(CryptoJS.enc.Utf8);
-          if(link) window.location.href = link;
+          if (link) window.location.href = link;
           else alert("Ошибка расшифровки ссылки");
-        } catch(e) {
+        } catch (e) {
           alert("Ошибка при переходе");
           console.error(e);
         }
       };
 
-      // Добавляем кнопку в shadow DOM
       shadow.appendChild(btn);
     }
 
-    // Защита от F12, Ctrl+Shift+I, Ctrl+U и контекстного меню
-    document.addEventListener("keydown", e => {
+    // Блокировка F12, Ctrl+Shift+I, Ctrl+U
+    document.addEventListener("keydown", (e) => {
       if (
         e.key === "F12" ||
         (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
@@ -167,11 +181,12 @@
         alert("Доступ запрещён");
       }
     });
-    document.body.oncontextmenu = e => e.preventDefault();
-    document.body.oncopy = e => e.preventDefault();
-    document.body.oncut = e => e.preventDefault();
 
-    // Примитивная анимация динозавра
+    document.body.oncontextmenu = (e) => e.preventDefault();
+    document.body.oncopy = (e) => e.preventDefault();
+    document.body.oncut = (e) => e.preventDefault();
+
+    // Анимация динозавра
     const dinoCanvas = document.getElementById("dino");
     const dCtx = dinoCanvas.getContext("2d");
     let frame = 0;
