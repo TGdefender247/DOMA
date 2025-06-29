@@ -6,168 +6,263 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
+    /* Общие стили */
     body {
-      margin: 0; padding: 0;
+      margin: 0;
       background: black;
-      color: white;
+      color: #fff;
       font-family: 'Share Tech Mono', monospace;
-      overflow: hidden;
-    }
-    canvas.matrix {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
-    }
-    .content {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: flex-start;
-      min-height: 100vh;
-      padding: 20px;
-      text-align: center;
-    }
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-      color: orange;
-      font-weight: bold;
-      text-shadow: 0 0 10px orange;
-    }
-    .desc {
-      font-size: 14px;
-      max-width: 95%;
-      white-space: pre-wrap;
-      margin-bottom: 30px;
-      color: #eee;
-    }
-    .buttons {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 10px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      text-align: center;
+      overflow-x: hidden;
+      user-select: none;
+      padding: 20px 10px 40px;
     }
-    .btn {
-      padding: 12px 24px;
-      border: 2px solid white;
+    /* Матрица канвас */
+    canvas.matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+    /* Заголовок белый неоновый */
+    h1.white-neon {
+      color: #fff;
+      font-weight: 900;
+      font-size: 36px;
+      margin-bottom: 15px;
+      text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px #fff;
+    }
+    /* Оранжевый неоновый текст */
+    .desc.orange-neon {
+      color: orange;
+      font-weight: 700;
+      font-size: 14px;
+      white-space: pre-wrap;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      line-height: 1.3;
+      text-shadow:
+        0 0 4px orange,
+        0 0 10px orange,
+        0 0 20px orange;
+      user-select: text;
+    }
+    /* Предупреждение Telegram жирное и больше */
+    #telegram-warning {
+      color: orange;
+      font-weight: 900;
+      font-size: 18px;
+      margin-bottom: 25px;
+      user-select: text;
+      text-shadow:
+        0 0 5px orange,
+        0 0 10px orange;
+    }
+    /* Кнопки белые с неоновым свечением */
+    #shadow-host button {
+      margin: 8px;
+      padding: 14px 28px;
+      border: 2px solid #fff;
       background: transparent;
-      color: white;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
       cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
+      font-family: 'Share Tech Mono', monospace;
       transition: 0.3s;
+      text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff;
+      user-select: none;
+      border-radius: 6px;
+      min-width: 130px;
     }
-    .btn:hover {
-      background: white;
+    #shadow-host button:hover {
+      background: #fff;
       color: black;
+      text-shadow: none;
     }
-    .footer {
-      color: red;
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 40px;
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 24px; }
-      .desc { font-size: 12px; }
-      .btn { font-size: 14px; padding: 10px 20px; }
-      .footer { font-size: 14px; }
+
+    /* Адаптивность текста и кнопок */
+    @media (max-width: 768px) {
+      h1.white-neon {
+        font-size: 28px;
+      }
+      .desc.orange-neon {
+        font-size: 12px;
+        max-width: 90vw;
+      }
+      #shadow-host button {
+        font-size: 16px;
+        padding: 12px 22px;
+        min-width: 110px;
+      }
     }
   </style>
 </head>
 <body>
   <canvas class="matrix"></canvas>
-  <div class="content">
-    <h1>Добро пожаловать в магазин DOMA SHOP 🏠</h1>
-    <div class="desc">
-🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌
+
+  <h1 class="white-neon">Добро пожаловать в магазин DOMA SHOP 🏠</h1>
+  <div class="desc orange-neon">
+🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌  
 
 🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают  
 ⚡️ СЕРВИС НА ГРАНИ ФАНТАСТИКИ — доставка быстрее скорости мысли  
 💎 КРИПТОНСКОЕ КАЧЕСТВО — прочнее алмазов, ярче сверхновой  
 
-НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨
+НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨  
 
-🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.
+🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.  
 
 *(Это не шопинг. Это квантовый скачок в вашей реальности.)*  
 
 P.S. Забудьте слово "невозможно". Вы теперь с нами.
-    </div>
-
-    <div class="buttons" id="button-box"></div>
-    <div class="footer">На вашем устройстве обязательно должен быть установлен Telegram</div>
   </div>
+
+  <div id="telegram-warning">На вашем устройстве обязательно должен быть установлен Telegram.</div>
+
+  <div id="shadow-host"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    // Матрица (белая)
-    const canvas = document.querySelector(".matrix");
-    const ctx = canvas.getContext("2d");
+    // Матрица белая неоновая
+    const canvas = document.querySelector('.matrix');
+    const ctx = canvas.getContext('2d');
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      ctx.font = fontSize + "px 'Share Tech Mono'";
     }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener('resize', resizeCanvas);
 
-    const fontSize = 12;
-    const columns = Math.floor(window.innerWidth / fontSize);
-    const drops = Array(columns).fill(1);
+    const fontSize = 14;
+    let letters = Array(Math.floor(window.innerWidth / fontSize)).fill(0);
+
+    ctx.font = fontSize + "px 'Share Tech Mono'";
 
     function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.07)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#fff"; // белый
 
-      ctx.fillStyle = "#fff";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
+      letters.forEach((y, i) => {
         const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        drops[i] = (drops[i] * fontSize > canvas.height && Math.random() > 0.975) ? 0 : drops[i] + 1;
-      }
+        const x = i * fontSize;
+        ctx.fillText(text, x, y);
+        letters[i] = y > canvas.height ? 0 : y + fontSize;
+      });
     }
-    setInterval(drawMatrix, 33);
 
-    // Кнопки с зашифрованными ссылками
+    resizeCanvas();
+    setInterval(drawMatrix, 50);
+
+    // Шифрованные ссылки
     const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
 
-    // Зашифрованные ссылки Telegram (только шифр)
-    const links = {
+    const encryptedLinks = {
       "БОТ": "glGMjJbYgx6xl2ks5iPy/walMDH6CyjN3gCzD0uzB50FIfQ03cljJsKKgcXAUuu6",
       "НОВОСТИ": "pjtlaep3wy7xZwg1grSSMagCDW66/JW1HSQXcP4rGLw8EkZSwnRxgxCyQZDQecER",
       "ОТЗЫВЫ": "+XkSI1Ekwq3Siw8NXCNFmrPJjMhDexXqorKOmkdsNKgCYgJbdrkZDgJjQv4Of7xw",
       "ЧАТ": "taxgcSOy7GtJUzjYHcNusDy/6CahGrmhqep9QhASnXMg+i57v879kGFUA8F5DvaF"
     };
 
-    // Набор фейковых ссылок для адресной строки
     const fakeLinks = [];
-    for(let i=0; i<1000; i++) fakeLinks.push("https://proxy"+i+".fake");
+    for (let i = 1; i <= 1000; i++) {
+      fakeLinks.push("https://join-proxy" + i + ".fake");
+    }
 
-    const buttonBox = document.getElementById("button-box");
+    // Shadow DOM для кнопок
+    const host = document.getElementById("shadow-host");
+    const shadow = host.attachShadow({ mode: "open" });
 
-    for(const [label, enc] of Object.entries(links)) {
+    for (const [label, enc] of Object.entries(encryptedLinks)) {
       const btn = document.createElement("button");
-      btn.className = "btn";
       btn.textContent = label;
 
-      // Генерируем фейковую ссылку для title
-      btn.title = fakeLinks[Math.floor(Math.random()*fakeLinks.length)];
+      // Добавляем стили (дублируется для тени shadow, так что здесь для гарантии)
+      btn.style.margin = "8px";
+      btn.style.padding = "14px 28px";
+      btn.style.border = "2px solid #fff";
+      btn.style.background = "transparent";
+      btn.style.color = "#fff";
+      btn.style.fontSize = "18px";
+      btn.style.fontWeight = "700";
+      btn.style.cursor = "pointer";
+      btn.style.fontFamily = "'Share Tech Mono', monospace";
+      btn.style.transition = "0.3s";
+      btn.style.borderRadius = "6px";
+      btn.style.minWidth = "130px";
+      btn.style.userSelect = "none";
+      btn.style.textShadow =
+        "0 0 5px #fff, 0 0 10px #fff";
+
+      const fake = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+      btn.title = fake;
+
+      btn.addEventListener("mouseenter", () => {
+        btn.style.background = "#fff";
+        btn.style.color = "black";
+        btn.style.textShadow = "none";
+      });
+      btn.addEventListener("mouseleave", () => {
+        btn.style.background = "transparent";
+        btn.style.color = "#fff";
+        btn.style.textShadow =
+          "0 0 5px #fff, 0 0 10px #fff";
+      });
 
       btn.onclick = () => {
-        // Берём рандомную фейковую ссылку (для адресной строки)
-        const fake = fakeLinks[Math.floor(Math.random()*fakeLinks.length)];
-
-        // Открываем новое окно с фейковой ссылкой + хешем зашифрованной реальной ссылки
-        const url = ${fake}/redirect.html#${enc};
-        // Чтобы окно открывалось полноценно и без показа реальной ссылки
-        window.open(url, "_blank", "noopener,noreferrer");
+        try {
+          const raw = CryptoJS.enc.Base64.parse(enc);
+          const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
+          const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
+          const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7,
+          });
+          const link = decrypted.toString(CryptoJS.enc.Utf8);
+          if (link) window.location.href = link;
+          else alert("Ошибка расшифровки ссылки");
+        } catch (e) {
+          alert("Ошибка при переходе");
+          console.error(e);
+        }
       };
 
-      buttonBox.appendChild(btn);
+      shadow.appendChild(btn);
     }
+
+    // Блокировка F12, Ctrl+Shift+I, Ctrl+U
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
+        (e.ctrlKey && e.key.toLowerCase() === "u")
+      ) {
+        e.preventDefault();
+        alert("Доступ запрещён");
+      }
+    });
+
+    document.body.oncontextmenu = (e) => e.preventDefault();
+    document.body.oncopy = (e) => e.preventDefault();
+    document.body.oncut = (e) => e.preventDefault();
+
   </script>
 </body>
 </html>
