@@ -3,30 +3,32 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DOMA SHOP — Падающая матрица и кнопки</title>
+<title>DOMA SHOP</title>
 <style>
-  /* Сброс стилей */
+  /* Сброс и базовые стили */
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
   html, body {
     height: 100%;
     background: black;
+    color: #00ff00;
     font-family: 'Share Tech Mono', monospace;
     user-select: none;
-    overflow: hidden;
-    color: white;
   }
-  /* Матрица канвас */
+
+  /* Канвас матрицы на весь экран */
   canvas.matrix {
     position: fixed;
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
     z-index: 0;
+    background: black;
     display: block;
   }
-  /* Контент поверх */
+
+  /* Обертка контента */
   #content {
     position: relative;
     z-index: 10;
@@ -40,17 +42,19 @@
     min-height: 100vh;
     justify-content: center;
   }
-  /* Заголовок */
+
+  /* Заголовок с белым неоновым свечением */
   h1 {
     font-size: 3.5rem;
     color: white;
     text-shadow:
-      0 0 10px black,
-      0 0 20px black,
-      0 0 30px black;
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 15px #ddd;
     user-select: text;
   }
-  /* Текст футуристический */
+
+  /* Текст под заголовком - салатовый с тенями */
   p.futuristic-text {
     font-size: 1.15rem;
     color: #80ff80;
@@ -62,6 +66,7 @@
     line-height: 1.4;
     user-select: text;
   }
+
   /* Красный предупреждающий текст */
   p.telegram-warning {
     color: #ff3b3b;
@@ -72,14 +77,16 @@
       0 0 6px #a00;
     user-select: text;
   }
-  /* Контейнер кнопок */
+
+  /* Контейнер с кнопками */
   #container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
   }
-  /* Кнопки */
+
+  /* Кнопки белые с неоновым свечением */
   button {
     background: transparent;
     border: 2px solid white;
@@ -89,7 +96,8 @@
     padding: 14px 32px;
     cursor: pointer;
     border-radius: 8px;
-    text-shadow: 0 0 6px white;
+    text-shadow:
+      0 0 6px white;
     transition:
       background-color 0.3s ease,
       color 0.3s ease,
@@ -103,6 +111,7 @@
     box-shadow: 0 0 20px white;
     outline: none;
   }
+
   /* Адаптив */
   @media (max-width: 768px) {
     h1 {
@@ -119,6 +128,7 @@
       padding: 12px 28px;
     }
   }
+
   @media (max-width: 400px) {
     h1 {
       font-size: 2rem;
@@ -141,7 +151,7 @@
 <canvas class="matrix"></canvas>
 
 <div id="content">
-  <h1>DOMA SHOP</h1>
+  <h1>DOMA SHOP 🏠</h1>
   <p class="futuristic-text">
 🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌
 
@@ -164,7 +174,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 </div>
 
 <script>
-  // Матрица с падающими буквами "DOMA SHOP"
+  // Матрица с "DOMA SHOP" падающими буквами зелёного цвета
   const canvas = document.querySelector('canvas.matrix');
   const ctx = canvas.getContext('2d');
 
@@ -190,7 +200,6 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
   window.addEventListener('resize', resize);
 
   function draw() {
-    // Черный фон с небольшой прозрачностью для "следа"
     ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
     ctx.fillRect(0, 0, width, height);
 
@@ -209,7 +218,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   setInterval(draw, 50);
 
-  // Реальные ссылки
+  // Реальные и фейковые ссылки
   const realLinks = {
     "БОТ": "https://t.me/Doma111_bot",
     "НОВОСТИ": "https://t.me/+r_YNyC6D2BljMzcy",
@@ -217,67 +226,54 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     "ЧАТ": "https://t.me/+2h-o-940Sj42Yjdh"
   };
 
-  // Генерация фейковой ссылки для показа в title и адресной строке
-  function generateFakeUrl(label) {
-    const randomId = Math.random().toString(36).substring(2, 10);
-    return https://fake-domain.fake/${label.toLowerCase()}_${randomId};
+  const fakeLinks = [];
+  for(let i=1; i<=1000; i++) {
+    fakeLinks.push("https://join-proxy" + i + ".fake");
   }
 
   const container = document.getElementById('container');
 
-  // Открываем новую вкладку с фейковой ссылкой, а потом редиректим на реальную
-  function openFakeAndRedirect(realUrl, fakeUrl) {
-    const redirectHTML = `
+  function openWithFakeUrl(realUrl) {
+    const redirectPage = `
 <!DOCTYPE html>
 <html lang="ru">
-<head><meta charset="UTF-8"><title>Переадресация</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-  body { background:black; color:#0f0; font-family: monospace; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;}
-</style>
-</head>
-<body>
+<head><meta charset="UTF-8" /><title>.</title><meta name="viewport" content="width=device-width, initial-scale=1" /></head>
+<body style="background:black; color:#00ff00; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; font-family:'Share Tech Mono', monospace;">
   <div>Переадресация... Пожалуйста, подождите.</div>
   <script>
-    setTimeout(() => {
-      window.location.replace(${JSON.stringify(realUrl)});
-    }, 50);
+    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 50);
   <\/script>
 </body>
 </html>
 `;
 
-    const newWin = window.open('', '_blank', 'noopener,noreferrer');
-    if (!newWin) {
-      alert('Пожалуйста, разрешите открывать новые окна для перехода.');
-      return;
-    }
-    newWin.document.write(redirectHTML);
-    newWin.document.close();
-
-    setTimeout(() => {
-      try {
-        newWin.history.replaceState(null, '', fakeUrl);
-      } catch(e) {
-        console.warn('Не удалось заменить URL в истории', e);
-      }
-    }, 10);
+    const blob = new Blob([redirectPage], {type: 'text/html'});
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank', 'noopener,noreferrer');
   }
 
-  // Создаем кнопки
   Object.entries(realLinks).forEach(([label, realUrl]) => {
     const btn = document.createElement('button');
-    const fakeUrl = generateFakeUrl(label);
-
     btn.textContent = label;
-    btn.title = fakeUrl;
+    btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
-    btn.onclick = () => openFakeAndRedirect(realUrl, fakeUrl);
+    btn.onclick = () => openWithFakeUrl(realUrl);
+
+    btn.addEventListener('mouseenter', () => {
+      btn.style.background = 'white';
+      btn.style.color = 'black';
+      btn.style.textShadow = 'none';
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.background = 'transparent';
+      btn.style.color = 'white';
+      btn.style.textShadow = '0 0 5px white';
+    });
 
     container.appendChild(btn);
   });
 
-  // Запрет клавиш F12, Ctrl+Shift+I, Ctrl+U
+  // Запретить F12, Ctrl+Shift+I, Ctrl+U
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
@@ -292,7 +288,6 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
   document.body.oncontextmenu = e => e.preventDefault();
   document.body.oncopy = e => e.preventDefault();
   document.body.oncut = e => e.preventDefault();
-
 </script>
 
 </body>
