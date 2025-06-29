@@ -1,226 +1,177 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DOMA SHOP — Падающая матрица и кнопки</title>
-<style>
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-  html, body {
-    height: 100%;
-    background: black;
-    color: #00ff00;
-    font-family: 'Share Tech Mono', monospace;
-    user-select: none;
-    overflow-x: hidden;
-  }
-  canvas.matrix {
-    position: fixed; top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: 0; background: black; display: block;
-  }
-  #content {
-    position: relative;
-    z-index: 10;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 50px 20px 60px;
-    text-align: center;
-    display: flex; flex-direction: column;
-    gap: 30px; min-height: 100vh;
-    justify-content: center;
-  }
-  h1 {
-    font-size: 3.5rem;
-    color: white;
-    text-shadow:
-      0 0 5px #fff,
-      0 0 10px #fff,
-      0 0 15px #ddd;
-    user-select: text;
-  }
-  p.futuristic-text {
-    font-size: 1.15rem;
-    color: #80ff80;
-    text-shadow:
-      0 0 2px #080,
-      0 0 4px #0f0,
-      0 0 6px #0f0;
-    white-space: pre-line;
-    line-height: 1.4;
-    user-select: text;
-  }
-  p.telegram-warning {
-    color: #ff3b3b;
-    font-weight: 700;
-    font-size: 1.4rem;
-    text-shadow:
-      0 0 3px #600,
-      0 0 6px #a00;
-    user-select: text;
-  }
-  #container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  button {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.3rem;
-    padding: 14px 32px;
-    cursor: pointer;
-    border-radius: 8px;
-    text-shadow: 0 0 6px white;
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease,
-      text-shadow 0.3s ease,
-      box-shadow 0.3s ease;
-  }
-  button:hover, button:focus {
-    background: white;
-    color: black;
-    text-shadow: none;
-    box-shadow: 0 0 20px white;
-    outline: none;
-  }
-  @media (max-width: 768px) {
-    h1 { font-size: 2.8rem; }
-    p.futuristic-text { font-size: 1rem; }
-    p.telegram-warning { font-size: 1.2rem; }
-    button { font-size: 1.1rem; padding: 12px 28px; }
-  }
-  @media (max-width: 400px) {
-    h1 { font-size: 2rem; }
-    p.futuristic-text { font-size: 0.9rem; }
-    p.telegram-warning { font-size: 1rem; }
-    button { font-size: 1rem; padding: 10px 22px; }
-  }
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>DOMA SHOP — Darknet Gateway</title>
+  <style>
+    /* reset */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; overflow:hidden; background:#000; font-family:'Share Tech Mono', monospace; user-select:none; }
+
+    /* матрица */
+    canvas.matrix { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; }
+
+    /* фиолетовая сетка */
+    .grid {
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      background:
+        linear-gradient(rgba(128,0,128,0.07) 1px, transparent 1px) 0 0 / 40px 40px,
+        linear-gradient(90deg, rgba(128,0,128,0.07) 1px, transparent 1px) 0 0 / 40px 40px;
+      z-index:1;
+      pointer-events:none;
+    }
+
+    /* контент */
+    #content {
+      position:relative; z-index:2;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      height:100vh; text-align:center;
+      padding:0 20px;
+    }
+
+    /* заголовок с эффектом глюка */
+    h1 {
+      color:#d590ff;
+      font-size:3.2rem;
+      text-shadow:0 0 8px #d590ff,0 0 15px #7200a1;
+      animation: glitch 2s infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0);}
+      20% { transform: skew(0.5deg); }
+      40% { transform: translate(-2px); }
+      60% { transform: skew(-0.5deg); }
+      80% { transform: translate(2px); }
+      100% { transform: translate(0); }
+    }
+
+    p, .telegram-warning {
+      font-size:1.1rem;
+      line-height:1.4;
+      margin-bottom:20px;
+    }
+    p { color:#80ff80; text-shadow:0 0 3px #080,0 0 6px #0f0; }
+    .telegram-warning { color:#ff4b4b; font-weight:700; text-shadow:0 0 4px #600, 0 0 8px #a00; }
+
+    /* кнопки */
+    #buttons { display:flex; flex-wrap:wrap; gap:16px; }
+    button {
+      background:transparent;
+      border:2px solid #d590ff;
+      color:#d590ff;
+      padding:12px 26px;
+      font-size:1.2rem;
+      cursor:pointer;
+      border-radius:6px;
+      text-shadow:0 0 6px #d590ff;
+      transition: all 0.3s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    button:hover {
+      background:#d590ff;
+      color:#000;
+      box-shadow:0 0 20px #d590ff, inset 0 0 8px #000;
+    }
+    button::before {
+      content:'';
+      position:absolute; top:0; left:-100%;
+      width:100%; height:100%;
+      background:rgba(255,255,255,0.05);
+      transform: skewX(-20deg);
+      transition: 0.5s ease;
+    }
+    button:hover::before {
+      left:100%;
+    }
+
+    @media(max-width:768px){
+      h1 { font-size:2.6rem; }
+      p, .telegram-warning { font-size:1rem; }
+      button { font-size:1rem; padding:10px 24px; }
+    }
+    @media(max-width:400px){
+      h1 { font-size:2rem; }
+      p, .telegram-warning { font-size:0.9rem; }
+      button { font-size:0.9rem; padding:8px 20px; }
+    }
+  </style>
 </head>
 <body>
 
 <canvas class="matrix"></canvas>
+<div class="grid"></div>
 
 <div id="content">
   <h1>DOMA SHOP 🏠</h1>
-  <p class="futuristic-text">
+  <p>
 🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌
 
 🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают  
 ⚡️ СЕРВИС НА ГРАНИ ФАНТАСТИКИ — доставка быстрее скорости мысли  
 💎 КРИПТОНСКОЕ КАЧЕСТВО — прочнее алмазов, ярче сверхновой
-
-НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨
-
-🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.
-
-*(Это не шопинг. Это квантовый скачок в вашей реальности.)*
-
-P.S. Забудьте слово "невозможно". Вы теперь с нами.
   </p>
-
   <p class="telegram-warning">На вашем устройстве обязательно должен быть установлен Telegram</p>
-
-  <div id="container"></div>
+  <div id="buttons">
+    <button data-domain="Doma111_bot">БОТ</button>
+    <button data-domain="r_YNyC6D2BljMzcy">НОВОСТИ</button>
+    <button data-domain="6LPNuuSTKzMyMmJi">ОТЗЫВЫ</button>
+    <button data-domain="2h-o-940Sj42Yjdh">ЧАТ</button>
+  </div>
 </div>
 
 <script>
-  // Матрица с "DOMA SHOP"
-  const canvas = document.querySelector('canvas.matrix');
+  // матрица с слегка фиолетовым свечением
+  const canvas = document.querySelector('.matrix');
   const ctx = canvas.getContext('2d');
+  const letters = "DOMA SHOP ";
+  const fs = 16;
+  let w,h,cols,drops=[];
 
-  let width, height, columns, drops = [];
-  const word = "DOMA SHOP ";
-  const wordLen = word.length;
-
-  function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    columns = Math.floor(width / 14);
-    drops = [];
-    for(let i = 0; i < columns; i++) drops[i] = Math.floor(Math.random() * -20);
+  function resize(){
+    w=canvas.width=window.innerWidth;
+    h=canvas.height=window.innerHeight;
+    cols = Math.floor(w/fs);
+    drops = Array(cols).fill(1);
   }
-  resize();
-  window.addEventListener('resize', resize);
 
-  function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
-    ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = '#00ff00';
-    ctx.font = '14px Share Tech Mono';
-    for(let i=0; i < drops.length; i++) {
-      let charIndex = Math.abs(drops[i]) % wordLen;
-      let text = word.charAt(charIndex);
-      ctx.fillText(text, i * 14, drops[i] * 14);
-     if(drops[i] * 14 > height && Math.random() > 0.975) drops[i] = 0;
+  window.addEventListener('resize',resize);
+ resize();
+
+  function draw(){
+    ctx.fillStyle = "rgba(0,0,0,0.15)";
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = "#80ff80";
+    ctx.font = fs + "px monospace";
+    drops.forEach((y,i)=>{
+      const char = letters.charAt(Math.floor(Math.random()*letters.length));
+      ctx.fillText(char, i*fs, y*fs);
+      if (y*fs>h && Math.random()>0.975) drops[i]=0;
       drops[i]++;
-    }
-  }
-  setInterval(draw, 50);
-
-  const realLinks = {
-    "БОТ": "https://t.me/Doma111_bot",
-    "НОВОСТИ": "https://t.me/+r_YNyC6D2BljMzcy",
-    "ОТЗЫВЫ": "https://t.me/+6LPNuuSTKzMyMmJi",
-    "ЧАТ": "https://t.me/+2h-o-940Sj42Yjdh"
-  };
-
-  const container = document.getElementById('container');
-
-  function openTelegramLink(realUrl) {
-    // Подменяем URL в адресной строке (фейковый, например точка)
-    history.replaceState(null, '', '.');
-
-    // Переходим на реальный Telegram URL без открытия нового окна
-    location.replace(realUrl);
-  }
-
-  Object.entries(realLinks).forEach(([label, realUrl]) => {
-    const btn = document.createElement('button');
-    btn.textContent = label;
-    btn.title = "Ссылка скрыта";
-
-    btn.onclick = () => openTelegramLink(realUrl);
-
-    btn.addEventListener('mouseenter', () => {
-      btn.style.background = 'white';
-      btn.style.color = 'black';
-      btn.style.textShadow = 'none';
     });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.background = 'transparent';
-      btn.style.color = 'white';
-      btn.style.textShadow = '0 0 5px white';
-    });
+  }
+  setInterval(draw,50);
 
-    container.appendChild(btn);
+  // кнопки → Telegram
+  document.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const domain = btn.getAttribute('data-domain');
+      window.location.href = 'tg://resolve?domain=' + domain;
+    });
   });
 
-  // Запрет горячих клавиш для разработчика
-  document.addEventListener('keydown', e => {
-    if (
-      e.key === 'F12' ||
-      (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
-      (e.ctrlKey && e.key.toLowerCase() === 'u')
-    ) {
-      e.preventDefault();
-      alert('Доступ запрещён');
-    }
+  // защита
+  document.body.oncontextmenu = e=>e.preventDefault();
+  document.body.oncopy = e=>e.preventDefault();
+  document.body.oncut = e=>e.preventDefault();
+  document.addEventListener('keydown', e=>{
+    if(e.key==='F12'  (e.ctrlKey&&e.shiftKey&&e.key==='I')  (e.ctrlKey&&e.key==='U')){
+      e.preventDefault(); alert('Доступ запрещён'); }
   });
-  document.body.oncontextmenu = e => e.preventDefault();
-  document.body.oncopy = e => e.preventDefault();
-  document.body.oncut = e => e.preventDefault();
-
 </script>
-
 </body>
 </html>
