@@ -1,89 +1,151 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DOMA SHOP — Даркнет портал</title>
-  <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      background: black;
-      color: #b084f8;
-      font-family: 'Share Tech Mono', monospace;
-      user-select: none;
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DOMA SHOP</title>
+<style>
+  /* Сброс и базовые стили */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    background: #0a0a0a;
+    color: #f0f0ff;
+    font-family: 'Share Tech Mono', monospace;
+    user-select: none;
+    overflow-x: hidden;
+  }
 
-    canvas.matrix {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      background: black;
-      display: block;
-    }
+  /* Канвас матрицы на весь экран */
+  canvas.matrix {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    background: #0a0a0a;
+    display: block;
+  }
 
-    #content {
-      position: relative;
-      z-index: 10;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      text-align: center;
-    }
+  /* Обертка контента */
+  #content {
+    position: relative;
+    z-index: 10;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 50px 20px 60px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    min-height: 100vh;
+    justify-content: center;
+  }
 
+  /* Заголовок с белым и фиолетовым неоном */
+  h1 {
+    font-size: 3.5rem;
+    color: #f0f0ff;
+    text-shadow:
+      0 0 5px #a66eff,
+      0 0 15px #8a52ff,
+      0 0 30px #6e3fff;
+    user-select: text;
+  }
+
+  /* Текст с фиолетовым неоновым свечением */
+  p.futuristic-text {
+    font-size: 1.15rem;
+    color: #f0f0ff;
+    text-shadow:
+      0 0 5px #b289ff,
+      0 0 10px #9c78ff,
+      0 0 15px #7b57ff;
+    white-space: pre-line;
+    line-height: 1.5;
+    user-select: text;
+  }
+
+  /* Красный предупреждающий текст с чёрной тенью */
+  p.telegram-warning {
+    color: #ff3b3b;
+    font-weight: 700;
+    font-size: 1.4rem;
+    text-shadow:
+      0 0 3px #600,
+      0 0 6px #a00;
+    user-select: text;
+  }
+
+  /* Контейнер с кнопками */
+  #container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  /* Кнопки белые с фиолетовым неоном */
+  button {
+    background: transparent;
+    border: 2px solid #b289ff;
+    color: #b289ff;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.3rem;
+    padding: 14px 32px;
+    cursor: pointer;
+    border-radius: 8px;
+    text-shadow:
+      0 0 6px #b289ff;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      text-shadow 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  button:hover, button:focus {
+    background: #b289ff;
+    color: black;
+    text-shadow: none;
+    box-shadow: 0 0 20px #b289ff;
+    outline: none;
+  }
+
+  /* Адаптив */
+  @media (max-width: 768px) {
     h1 {
-      font-size: 3.5rem;
-      color: white;
-      text-shadow: 0 0 5px #fff, 0 0 10px #b084f8;
-      margin-bottom: 30px;
+      font-size: 2.8rem;
     }
-
-    p {
-      font-size: 1.1rem;
-      color: #a586ff;
-      text-shadow: 0 0 3px #b084f8;
-      margin: 20px 0;
-      white-space: pre-line;
+    p.futuristic-text {
+      font-size: 1rem;
     }
-
     p.telegram-warning {
-      color: #ff3b3b;
       font-size: 1.2rem;
-      text-shadow: 0 0 4px #900;
     }
-
-    #buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
-    }
-
     button {
-      background: transparent;
-      border: 2px solid #fff;
-      color: #fff;
-      font-size: 1.2rem;
-      padding: 14px 28px;
-      border-radius: 6px;
-      cursor: pointer;
-      text-shadow: 0 0 6px #fff;
-      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      padding: 12px 28px;
     }
+  }
 
-    button:hover {
-      background: white;
-      color: black;
-      box-shadow: 0 0 20px #fff;
-      text-shadow: none;
+  @media (max-width: 400px) {
+    h1 {
+      font-size: 2rem;
     }
-  </style>
+    p.futuristic-text {
+      font-size: 0.9rem;
+    }
+    p.telegram-warning {
+      font-size: 1rem;
+    }
+    button {
+      font-size: 1rem;
+      padding: 10px 22px;
+    }
+  }
+</style>
 </head>
 <body>
 
@@ -91,11 +153,11 @@
 
 <div id="content">
   <h1>DOMA SHOP 🏠</h1>
-  <p>
+  <p class="futuristic-text">
 🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌
 
 🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают  
-⚡ СЕРВИС НА ГРАНИ ФАНТАСТИКИ — доставка быстрее скорости мысли  
+⚡️ СЕРВИС НА ГРАНИ ФАНТАСТИКИ — доставка быстрее скорости мысли  
 💎 КРИПТОНСКОЕ КАЧЕСТВО — прочнее алмазов, ярче сверхновой
 
 НАШ КЛИЕНТ — НЕ БОГ, НО ОЧЕНЬ БЛИЗКО К ЭТОМУ ✨
@@ -103,88 +165,134 @@
 🛸 ВАШ КОРАБЛЬ ЗАПРАВЛЕН. КУРС — НА АБСОЛЮТ.
 
 *(Это не шопинг. Это квантовый скачок в вашей реальности.)*
+
+P.S. Забудьте слово "невозможно". Вы теперь с нами.
   </p>
 
-  <p class="telegram-warning">На вашем устройстве должен быть установлен Telegram</p>
+  <p class="telegram-warning">На вашем устройстве обязательно должен быть установлен Telegram</p>
 
-  <div id="buttons"></div>
+  <div id="container"></div>
 </div>
 
 <script>
+  // Матрица с "DOMA SHOP" падающими буквами в фиолетовом цвете
   const canvas = document.querySelector('canvas.matrix');
   const ctx = canvas.getContext('2d');
-  let width, height, columns, drops = [];
+
+  let width, height;
+  let columns;
+  let drops = [];
+
   const word = "DOMA SHOP ";
   const wordLen = word.length;
 
   function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    columns = Math.floor(width / 14);
-    drops = Array.from({length: columns}, () => Math.floor(Math.random() * -20));
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    columns = Math.floor(width / 16);
+    drops = [];
+    for(let i = 0; i < columns; i++) {
+      drops[i] = Math.floor(Math.random() * -20);
+    }
   }
   resize();
   window.addEventListener('resize', resize);
 
   function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    ctx.fillStyle = "rgba(10, 0, 20, 0.15)";
     ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = "#b084f8";
-    ctx.font = "14px monospace";
 
-    for(let i = 0; i < drops.length; i++) {
-      const text = word.charAt(Math.floor(drops[i]) % wordLen);
-      ctx.fillText(text, i * 14, drops[i] * 14);
-      if (drops[i] * 14 > height && Math.random() > 0.975) drops[i] = 0;
+    ctx.fillStyle = '#b289ff';
+    ctx.font = '16px Share Tech Mono';
+
+    for(let i=0; i < drops.length; i++) {
+      let charIndex = Math.abs(drops[i]) % wordLen;
+      let text = word.charAt(charIndex);
+      ctx.fillText(text, i * 16, drops[i] * 16);
+
+      if(drops[i] * 16 > height && Math.random() > 0.975) drops[i] = 0;
       drops[i]++;
     }
   }
+
   setInterval(draw, 50);
 
+  // Реальные и фейковые ссылки (добавлена кнопка ОПЕРАТОР)
   const realLinks = {
     "БОТ": "tg://resolve?domain=Doma111_bot",
     "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
-    "ОТЗЫВЫ": "tg://resolve?domain=SixLPNuuSTKzMyMmJi",
-    "ЧАТ": "tg://resolve?domain=ChatSecretShop"
+    "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
+    "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh",
+    "ОПЕРАТОР": "tg://user?id=7970987069"
   };
 
-  const fakeLinks = Array.from({length: 1000}, (_, i) => "https://redirect.fake/route" + (i + 1));
-  const container = document.getElementById('buttons');
-
-  function openTelegram(fakeUrl, realTelegramLink) {
-    const a = document.createElement('a');
-    a.href = realTelegramLink;
-    a.style.display = 'none';
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+  const fakeLinks = [];
+  for(let i=1; i<=1000; i++) {
+    fakeLinks.push("https://fakeproxy" + i + ".com");
   }
 
-  Object.entries(realLinks).forEach(([label, realLink]) => {
-    const button = document.createElement('button');
-    button.textContent = label;
-    button.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+  const container = document.getElementById('container');
 
-    button.onclick = () => {
-      setTimeout(() => {
-        openTelegram(button.title, realLink);
-      }, 1500);
-    };
+  function openWithFakeUrl(realUrl) {
+    // Создаём фейковую ссылку из массива
+    const fakeUrl = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
-    container.appendChild(button);
+    // Открываем новую вкладку с фейковой ссылкой (для скрытия реальной)
+    const redirectPage = `
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8" /><title>.</title><meta name="viewport" content="width=device-width, initial-scale=1" /></head>
+<body style="background:#0a0a0a; color:#b289ff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; font-family:'Share Tech Mono', monospace;">
+  <div>Переадресация... Пожалуйста, подождите.</div>
+  <script>
+    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 25000);
+  <\/script>
+</body>
+</html>
+`;
+
+    const blob = new Blob([redirectPage], {type: 'text/html'});
+    const blobUrl = URL.createObjectURL(blob);
+
+    // Открываем вкладку с фейковой ссылкой (адрес в браузере не показывает реальный)
+    window.open(blobUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  Object.entries(realLinks).forEach(([label, realUrl]) => {
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+
+    btn.onclick = () => openWithFakeUrl(realUrl);
+
+    btn.addEventListener('mouseenter', () => {
+      btn.style.background = '#b289ff';
+      btn.style.color = 'black';
+      btn.style.textShadow = 'none';
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.background = 'transparent';
+      btn.style.color = '#b289ff';
+      btn.style.textShadow = '0 0 6px #b289ff';
+    });
+
+    container.appendChild(btn);
   });
 
+  // Защита от клавиш разработчика и копирования
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
-      (e.ctrlKey && e.shiftKey && ['I', 'J'].includes(e.key.toUpperCase())) ||
-      (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase()))
+      (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+      (e.ctrlKey && e.key.toLowerCase() === 'u')
     ) {
       e.preventDefault();
       alert('Доступ запрещён');
     }
   });
+
   document.body.oncontextmenu = e => e.preventDefault();
   document.body.oncopy = e => e.preventDefault();
   document.body.oncut = e => e.preventDefault();
