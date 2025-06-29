@@ -6,40 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background: black;
       color: white;
       font-family: 'Share Tech Mono', monospace;
       overflow: hidden;
     }
-
     canvas.matrix {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 0;
     }
-
     .content {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
       min-height: 100vh;
       padding: 20px;
       text-align: center;
     }
-
     h1 {
       font-size: 32px;
       margin-bottom: 20px;
@@ -47,7 +33,6 @@
       font-weight: bold;
       text-shadow: 0 0 10px orange;
     }
-
     .desc {
       font-size: 14px;
       max-width: 95%;
@@ -55,7 +40,6 @@
       margin-bottom: 30px;
       color: #eee;
     }
-
     .buttons {
       display: flex;
       flex-wrap: wrap;
@@ -63,7 +47,6 @@
       justify-content: center;
       margin-top: 10px;
     }
-
     .btn {
       padding: 12px 24px;
       border: 2px solid white;
@@ -74,33 +57,21 @@
       font-weight: bold;
       transition: 0.3s;
     }
-
     .btn:hover {
       background: white;
       color: black;
     }
-
     .footer {
       color: red;
       font-size: 16px;
       font-weight: bold;
       margin-top: 40px;
     }
-
     @media (max-width: 600px) {
-      h1 {
-        font-size: 24px;
-      }
-      .desc {
-        font-size: 12px;
-      }
-      .btn {
-        font-size: 14px;
-        padding: 10px 20px;
-      }
-      .footer {
-        font-size: 14px;
-      }
+      h1 { font-size: 24px; }
+      .desc { font-size: 12px; }
+      .btn { font-size: 14px; padding: 10px 20px; }
+      .footer { font-size: 14px; }
     }
   </style>
 </head>
@@ -130,7 +101,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    // Матрица
+    // Матрица (белая)
     const canvas = document.querySelector(".matrix");
     const ctx = canvas.getContext("2d");
 
@@ -149,7 +120,7 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#fff";
       ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
@@ -158,12 +129,12 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
         drops[i] = (drops[i] * fontSize > canvas.height && Math.random() > 0.975) ? 0 : drops[i] + 1;
       }
     }
-
     setInterval(drawMatrix, 33);
 
-    // Telegram кнопки
+    // Кнопки с зашифрованными ссылками
     const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
 
+    // Зашифрованные ссылки Telegram (только шифр)
     const links = {
       "БОТ": "glGMjJbYgx6xl2ks5iPy/walMDH6CyjN3gCzD0uzB50FIfQ03cljJsKKgcXAUuu6",
       "НОВОСТИ": "pjtlaep3wy7xZwg1grSSMagCDW66/JW1HSQXcP4rGLw8EkZSwnRxgxCyQZDQecER",
@@ -171,30 +142,30 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
       "ЧАТ": "taxgcSOy7GtJUzjYHcNusDy/6CahGrmhqep9QhASnXMg+i57v879kGFUA8F5DvaF"
     };
 
+    // Набор фейковых ссылок для адресной строки
     const fakeLinks = [];
-    for (let i = 0; i < 1000; i++) {
-      fakeLinks.push("https://proxy" + i + ".fake");
-    }
+    for(let i=0; i<1000; i++) fakeLinks.push("https://proxy"+i+".fake");
 
     const buttonBox = document.getElementById("button-box");
-    for (const [label, enc] of Object.entries(links)) {
+
+    for(const [label, enc] of Object.entries(links)) {
       const btn = document.createElement("button");
       btn.className = "btn";
       btn.textContent = label;
-      btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+
+      // Генерируем фейковую ссылку для title
+      btn.title = fakeLinks[Math.floor(Math.random()*fakeLinks.length)];
+
       btn.onclick = () => {
-        const raw = CryptoJS.enc.Base64.parse(enc);
-        const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
-        const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
-        const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
-          iv: iv,
-          mode: CryptoJS.mode.CBC,
-          padding: CryptoJS.pad.Pkcs7
-        });
-        const url = decrypted.toString(CryptoJS.enc.Utf8);
-        if (url) window.location.href = url;
-        else alert("Ошибка перехода.");
+        // Берём рандомную фейковую ссылку (для адресной строки)
+        const fake = fakeLinks[Math.floor(Math.random()*fakeLinks.length)];
+
+        // Открываем новое окно с фейковой ссылкой + хешем зашифрованной реальной ссылки
+        const url = ${fake}/redirect.html#${enc};
+        // Чтобы окно открывалось полноценно и без показа реальной ссылки
+        window.open(url, "_blank", "noopener,noreferrer");
       };
+
       buttonBox.appendChild(btn);
     }
   </script>
