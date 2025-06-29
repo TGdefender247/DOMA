@@ -14,7 +14,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100vh;
       text-align: center;
       user-select: none;
@@ -22,70 +22,71 @@
     }
     h1 {
       font-weight: bold;
-      font-size: 1.8rem;
-      color: #aaffaa;
-      text-shadow: 0 0 6px #000000;
+      font-size: 2.4rem;
+      color: white;
+      text-shadow: 0 0 10px #00ff00;
       margin-bottom: 1rem;
     }
     .description {
       color: #aaffaa;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.9rem;
+      font-weight: 700;
       max-width: 480px;
       line-height: 1.4;
       margin: 0 auto 3rem auto;
       white-space: pre-line;
-      text-shadow: 0 0 4px #000000;
+      text-shadow: 0 0 5px #000000;
       user-select: text;
+      font-style: normal;
     }
     #telegram-warning {
-      color: #ff3333;
-      font-weight: 700;
-      font-size: 1.3rem;
-      margin-bottom: 25px;
-      text-shadow: 0 0 4px #000000;
+      color: #ff4444;
+      font-weight: 900;
+      font-size: 1.6rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 6px #000000;
       user-select: text;
     }
     #buttons-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
+      gap: 16px;
       max-width: 480px;
       width: 100%;
     }
     button {
       flex: 1 1 40%;
       margin: 6px;
-      padding: 14px 24px;
-      border: 2px solid #aaffaa;
+      padding: 16px 28px;
+      border: 2px solid #ffffff;
       background: transparent;
-      color: #aaffaa;
-      font-size: 1.1rem;
+      color: #ffffff;
+      font-size: 1.2rem;
       cursor: pointer;
       font-family: 'Share Tech Mono', monospace;
       transition: 0.3s;
-      border-radius: 6px;
+      border-radius: 8px;
       user-select: none;
-      text-shadow: 0 0 4px #000000;
-      min-width: 120px;
+      text-shadow: 0 0 6px #000000;
+      min-width: 140px;
     }
     button:hover {
-      background: #aaffaa;
+      background: #ffffff;
       color: black;
       text-shadow: none;
     }
-    @media(max-width: 480px) {
+    @media (max-width: 480px) {
       h1 {
-        font-size: 1.4rem;
+        font-size: 1.8rem;
       }
       .description {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         max-width: 90vw;
       }
       button {
-        font-size: 1rem;
-        padding: 12px 18px;
+        font-size: 1.1rem;
+        padding: 14px 22px;
         flex: 1 1 100%;
         min-width: auto;
       }
@@ -96,7 +97,7 @@
   <h1>Добро пожаловать в магазин DOMA SHOP 🏠</h1>
 
   <div class="description">
-🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌  
+🚀 DOMA SHOP — ВЫХОДИМ ЗА ПРЕДЕЛЫ ГАЛАКТИКИ ШОПИНГА 🌌
 
 🔥 ТОВАРЫ ИЗ БУДУЩЕГО — то, о чём другие только мечтают  
 ⚡️ СЕРВИС НА ГРАНИ ФАНТАСТИКИ — доставка быстрее скорости мысли  
@@ -115,81 +116,95 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   <div id="buttons-container"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script>
-    const key = CryptoJS.enc.Utf8.parse("MySecretKey12345");
-    const encryptedLinks = {
-      "БОТ": "glGMjJbYgx6xl2ks5iPy/walMDH6CyjN3gCzD0uzB50FIfQ03cljJsKKgcXAUuu6",
-      "НОВОСТИ": "pjtlaep3wy7xZwg1grSSMagCDW66/JW1HSQXcP4rGLw8EkZSwnRxgxCyQZDQecER",
-      "ОТЗЫВЫ": "+XkSI1Ekwq3Siw8NXCNFmrPJjMhDexXqorKOmkdsNKgCYgJbdrkZDgJjQv4Of7xw",
-      "ЧАТ": "taxgcSOy7GtJUzjYHcNusDy/6CahGrmhqep9QhASnXMg+i57v879kGFUA8F5DvaF"
-    };
+    const fakeLinks = [
+      "https://join-proxy.fake/1",
+      "https://join-proxy.fake/2",
+      "https://join-proxy.fake/3",
+      "https://join-proxy.fake/4"
+    ];
 
-    // Генерируем фейковые ссылки для показа в тултипах и адресной строке (фальшивый URL будет открываться)
-    const fakeLinks = [];
-    for(let i=1; i<=1000; i++) {
-      fakeLinks.push("https://join-proxy" + i + ".fake");
-    }
+    const realLinks = {
+      "БОТ": "https://t.me/Doma111_bot",
+      "НОВОСТИ": "https://t.me/+r_YNyC6D2BljMzcy",
+      "ОТЗЫВЫ": "https://t.me/+6LPNuuSTKzMyMmJi",
+      "ЧАТ": "https://t.me/+2h-o-940Sj42Yjdh"
+    };
 
     const container = document.getElementById('buttons-container');
 
-    function decryptLink(enc) {
-      const raw = CryptoJS.enc.Base64.parse(enc);
-      const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0,4));
-      const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
-      const decrypted = CryptoJS.AES.decrypt({ciphertext: ct}, key, {iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
-      return decrypted.toString(CryptoJS.enc.Utf8);
+    // Функция открытия фейковой ссылки, которая перенаправит на настоящую
+    function openWithFakeUrl(realUrl) {
+      const fakeUrl = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+      const redirectPage = `
+        <html lang="ru">
+          <head>
+            <meta charset="UTF-8" />
+            <title>Переадресация...</title>
+            <script>
+              setTimeout(() => {
+                window.location.href = "${realUrl}";
+              }, 200);
+            </script>
+            <style>
+              body {
+                background: black;
+                color: #aaffaa;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                font-family: 'Share Tech Mono', monospace;
+                font-size: 1.2rem;
+                user-select: none;
+              }
+            </style>
+          </head>
+          <body>Переадресация...</body>
+        </html>
+      `;
+      const blob = new Blob([redirectPage], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Открываем вкладку с blobUrl (фейковой ссылкой)
+      window.open(blobUrl, '_blank', 'noopener,noreferrer');
     }
 
-    function openFakeRedirect(enc) {
-      const realLink = decryptLink(enc);
-      if (!realLink) {
-        alert("Ошибка перехода");
-        return;
-      }
-      // Создаем HTML с фейковой ссылкой в адресной строке и автоматическим редиректом
-      const html = `
-        <html lang="ru"><head><meta charset="UTF-8" /><title>Переадресация...</title>
-          <script>
-            setTimeout(() => { window.location.href = "${realLink}"; }, 150);
-          </script>
-          <style>body{font-family: 'Share Tech Mono', monospace; display:flex; justify-content:center; align-items:center; height:100vh; background:black; color:#aaffaa; margin:0;}</style>
-        </head>
-        <body>Переадресация...</body>
-        </html>`;
-      const blob = new Blob([html], {type: 'text/html'});
-      const fakeUrl = URL.createObjectURL(blob);
-      window.open(fakeUrl, '_blank', 'noopener,noreferrer');
-    }
-
-    Object.entries(encryptedLinks).forEach(([label, enc]) => {
+    // Создаём кнопки и добавляем обработчики
+    Object.entries(realLinks).forEach(([label, realUrl]) => {
       const btn = document.createElement('button');
       btn.textContent = label;
       btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
+      btn.onclick = () => openWithFakeUrl(realUrl);
+
       btn.addEventListener('mouseenter', () => {
-        btn.style.background = '#aaffaa';
+        btn.style.background = '#ffffff';
         btn.style.color = 'black';
         btn.style.textShadow = 'none';
       });
       btn.addEventListener('mouseleave', () => {
         btn.style.background = 'transparent';
-        btn.style.color = '#aaffaa';
-        btn.style.textShadow = '0 0 4px #000000';
+        btn.style.color = '#ffffff';
+        btn.style.textShadow = '0 0 6px #000000';
       });
-
-      btn.onclick = () => openFakeRedirect(enc);
 
       container.appendChild(btn);
     });
 
-    // Защита от F12, Ctrl+Shift+I, Ctrl+U и контекстного меню
+    // Запретить F12, Ctrl+Shift+I, Ctrl+U
     document.addEventListener('keydown', e => {
-      if (e.key === 'F12'  (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')  (e.ctrlKey && e.key.toLowerCase() === 'u')) {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+        (e.ctrlKey && e.key.toLowerCase() === 'u')
+      ) {
         e.preventDefault();
         alert('Доступ запрещён');
       }
     });
+
     document.body.oncontextmenu = e => e.preventDefault();
     document.body.oncopy = e => e.preventDefault();
     document.body.oncut = e => e.preventDefault();
