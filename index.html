@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DOMA SHOP — Darknet стиль</title>
 <style>
-  /* Сброс и базовые стили */
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
@@ -17,8 +16,6 @@
     user-select: none;
     overflow-x: hidden;
   }
-
-  /* Канвас матрицы на весь экран */
   canvas.matrix {
     position: fixed;
     top: 0; left: 0;
@@ -28,8 +25,6 @@
     background: #0a0a0a;
     display: block;
   }
-
-  /* Обертка контента */
   #content {
     position: relative;
     z-index: 10;
@@ -43,8 +38,6 @@
     min-height: 100vh;
     justify-content: center;
   }
-
-  /* Заголовок с белым и фиолетовым неоном */
   h1 {
     font-size: 3.5rem;
     color: #f0f0ff;
@@ -54,8 +47,6 @@
       0 0 30px #6e3fff;
     user-select: text;
   }
-
-  /* Текст с фиолетовым неоновым свечением */
   p.futuristic-text {
     font-size: 1.15rem;
     color: #f0f0ff;
@@ -67,8 +58,6 @@
     line-height: 1.5;
     user-select: text;
   }
-
-  /* Красный предупреждающий текст с чёрной тенью */
   p.telegram-warning {
     color: #ff3b3b;
     font-weight: 700;
@@ -78,16 +67,12 @@
       0 0 6px #a00;
     user-select: text;
   }
-
-  /* Контейнер с кнопками */
   #container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
   }
-
-  /* Кнопки белые с фиолетовым неоном */
   button {
     background: transparent;
     border: 2px solid #b289ff;
@@ -112,38 +97,17 @@
     box-shadow: 0 0 20px #b289ff;
     outline: none;
   }
-
-  /* Адаптив */
   @media (max-width: 768px) {
-    h1 {
-      font-size: 2.8rem;
-    }
-    p.futuristic-text {
-      font-size: 1rem;
-    }
-    p.telegram-warning {
-      font-size: 1.2rem;
-    }
-    button {
-      font-size: 1.1rem;
-      padding: 12px 28px;
-    }
+    h1 { font-size: 2.8rem; }
+    p.futuristic-text { font-size: 1rem; }
+    p.telegram-warning { font-size: 1.2rem; }
+    button { font-size: 1.1rem; padding: 12px 28px; }
   }
-
   @media (max-width: 400px) {
-    h1 {
-      font-size: 2rem;
-    }
-    p.futuristic-text {
-      font-size: 0.9rem;
-    }
-    p.telegram-warning {
-      font-size: 1rem;
-    }
-    button {
-      font-size: 1rem;
-      padding: 10px 22px;
-    }
+    h1 { font-size: 2rem; }
+    p.futuristic-text { font-size: 0.9rem; }
+    p.telegram-warning { font-size: 1rem; }
+    button { font-size: 1rem; padding: 10px 22px; }
   }
 </style>
 </head>
@@ -235,18 +199,37 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
 
   const container = document.getElementById('container');
 
-  function openWithFakeUrl(realUrl) {
+  function openWithFakeUrl(realUrl, fallbackUrl) {
     const fakeUrl = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
     const redirectPage = `
 <!DOCTYPE html>
 <html lang="ru">
-<head><meta charset="UTF-8" /><title>.</title><meta name="viewport" content="width=device-width, initial-scale=1" /></head>
-<body style="background:#0a0a0a; color:#b289ff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; font-family:'Share Tech Mono', monospace;">
+<head><meta charset="UTF-8" /><title>Переадресация...</title><meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body {
+    background:#0a0a0a;
+    color:#b289ff;
+    font-family:'Share Tech Mono', monospace;
+    display:flex; justify-content:center; align-items:center; height:100vh; margin:0;
+    user-select:none;
+  }
+</style>
+</head>
+<body>
   <div>Переадресация... Пожалуйста, подождите.</div>
   <script>
-    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 10000);
-  <\/script>
+    // Попытка открыть Telegram
+    function openTelegram() {
+      window.location.href = ${JSON.stringify(realUrl)};
+    }
+    openTelegram();
+
+    // Если через 10 сек не сработало — переадресуем на https fallback
+    setTimeout(() => {
+      window.location.href = ${JSON.stringify(fallbackUrl)};
+    }, 10000);
+  </script>
 </body>
 </html>
 `;
@@ -254,16 +237,25 @@ P.S. Забудьте слово "невозможно". Вы теперь с н
     const blob = new Blob([redirectPage], {type: 'text/html'});
     const blobUrl = URL.createObjectURL(blob);
 
-    // Открываем фейковую страницу с фейковым URL (адрес в строке не меняется)
+    // Открываем фейковую страницу с фейковым URL
     window.open(blobUrl, '_blank', 'noopener,noreferrer');
   }
 
   Object.entries(realLinks).forEach(([label, realUrl]) => {
+    // fallback https URL — убираем tg://, заменяем на https://t.me/...
+    let fallback = realUrl;
+    if(realUrl.startsWith('tg://resolve?domain=')) {
+      fallback = 'https://t.me/' + realUrl.split('tg://resolve?domain=')[1];
+    } else if(realUrl.startsWith('tg://user?id=')) {
+      // fallback для user id — просто https://t.me/user?id=...
+      fallback = 'https://t.me/user?id=' + realUrl.split('tg://user?id=')[1];
+    }
+
     const btn = document.createElement('button');
     btn.textContent = label;
     btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
-    btn.onclick = () => openWithFakeUrl(realUrl);
+    btn.onclick = () => openWithFakeUrl(realUrl, fallback);
 
     btn.addEventListener('mouseenter', () => {
       btn.style.background = '#b289ff';
