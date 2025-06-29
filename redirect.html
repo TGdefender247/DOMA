@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Redirecting...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      margin: 0; 
-      background: black; 
-      color: white; 
-      font-family: 'Share Tech Mono', monospace; 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      height: 100vh; 
-      user-select: none;
-      text-align: center;
-      padding: 20px;
-    }
-    .message {
-      font-size: 1.5rem;
-      max-width: 400px;
-      line-height: 1.4;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Redirecting...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<style>
+  body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    user-select: none;
+    text-align: center;
+    padding: 10px;
+  }
+  .message {
+    font-size: 9px;
+    max-width: 100vw;
+    line-height: 1.2;
+    word-wrap: break-word;
+  }
+</style>
 </head>
 <body>
   <div class="message" id="message">
-    Переадресация...<br>Пожалуйста, подождите
+    Переадресация... Пожалуйста, подождите
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
@@ -42,18 +43,9 @@
 
     function decryptLink(encodedLink) {
       try {
-        const encrypted = atob(encodedLink);
-        const raw = CryptoJS.enc.Base64.parse(btoa(encrypted));
-        const rawWA = CryptoJS.enc.Base64.parse(encrypted);
-        const rawWords = CryptoJS.enc.Base64.parse(encrypted);
-        const rawBytes = CryptoJS.enc.Base64.parse(encrypted);
-
-        // Для корректной работы:
-        const rawData = CryptoJS.enc.Base64.parse(encrypted);
-
-        const rawRaw = rawData;
-        const iv = CryptoJS.lib.WordArray.create(rawData.words.slice(0, 4));
-        const ct = CryptoJS.lib.WordArray.create(rawData.words.slice(4), rawData.sigBytes - 16);
+        const raw = CryptoJS.enc.Base64.parse(encodedLink);
+        const iv = CryptoJS.lib.WordArray.create(raw.words.slice(0, 4));
+        const ct = CryptoJS.lib.WordArray.create(raw.words.slice(4), raw.sigBytes - 16);
         const decrypted = CryptoJS.AES.decrypt({ ciphertext: ct }, key, {
           iv: iv,
           mode: CryptoJS.mode.CBC,
@@ -76,7 +68,7 @@
       } else {
         setTimeout(() => {
           window.location.replace(link);
-        }, 1500); // Пауза 1.5 секунды перед редиректом
+        }, 1200);
       }
     }
   </script>
