@@ -14,7 +14,6 @@
       user-select: none;
       overflow-x: hidden;
     }
-
     canvas.matrix {
       position: fixed;
       top: 0; left: 0;
@@ -24,7 +23,6 @@
       display: block;
       background: #050006;
     }
-
     #content {
       position: relative;
       z-index: 10;
@@ -38,14 +36,12 @@
       justify-content: center;
       min-height: 100vh;
     }
-
     h1 {
       font-size: 3rem;
       color: #e0d0ff;
       text-shadow: 0 0 6px #a26cff, 0 0 12px #8a2eff, 0 0 25px #6000c0;
       user-select: text;
     }
-
     p.futuristic-text {
       font-size: 1.1rem;
       color: #d0c0ff;
@@ -54,7 +50,6 @@
       line-height: 1.5;
       user-select: text;
     }
-
     p.telegram-warning {
       color: #ff3b3b;
       font-weight: bold;
@@ -62,14 +57,12 @@
       text-shadow: 0 0 3px #800, 0 0 5px #c00;
       user-select: text;
     }
-
     #container {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 20px;
     }
-
     button {
       background: transparent;
       border: 2px solid #a26cff;
@@ -82,14 +75,12 @@
       transition: 0.3s ease;
       user-select: none;
     }
-
     button:hover {
       background: #a26cff;
       color: black;
       text-shadow: none;
       box-shadow: 0 0 15px #a26cff;
     }
-
     @media (max-width: 600px) {
       h1 { font-size: 2rem; }
       button { font-size: 1rem; padding: 10px 24px; }
@@ -103,11 +94,11 @@
 <div id="content">
   <h1>DOMA SHOP 🕸</h1>
   <p class="futuristic-text">
-DOMA SHOP — где каждая покупка становится событием!  
+DOMA SHOP — где каждая покупка становится событием!
 
 🔥 *Лучшие товары* — отобранные с безупречным вкусом.  
 ⚡️ *Молниеносный сервис* — вам остается только наслаждаться.  
-💎 *Эксклюзивные предложения* — то, чего нет у других.  
+💎 *Эксклюзивные предложения* — то, чего нет у других.
 
 Добро пожаловать в мир премиального шопинга! 🚀
   </p>
@@ -151,6 +142,7 @@ DOMA SHOP — где каждая покупка становится событ
   resize();
   setInterval(draw, 50);
 
+  // Ссылки Telegram
   const realLinks = {
     "БОТ": "tg://resolve?domain=Doma111_bot",
     "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
@@ -159,87 +151,90 @@ DOMA SHOP — где каждая покупка становится событ
   };
 
   const operatorLink = "tg://user?id=7970987069";
-  const fakeLinks = [
-    "https://proxy1.fake.net", "https://redirect.secure.page",
-    "https://join-hidden-portal.com", "https://node.access.route"
-      ];
 
-  // Создаём blob-страницу с таймером и редиректом
+  const fakeLinks = [
+    "https://proxy1.fake.net",
+    "https://redirect.secure.page",
+    "https://join-hidden-portal.com",
+    "https://node.access.route"
+  ];
+
+  // Функция для открытия blob-страницы с обратным отсчётом и кнопкой
   function openViaBlob(realUrl) {
-    const page = `
+    const blobPage = `
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<title>Переадресация...</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  body {
-    background: #0a0a0a;
-    color: #b289ff;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    user-select: none;
-  }
-  #msg {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  #openBtn {
-    font-size: 1.3rem;
-    padding: 12px 28px;
-    border: 2px solid #b289ff;
-    border-radius: 8px;
-    background: transparent;
-    color: #b289ff;
-    cursor: pointer;
-    text-shadow: 0 0 6px #b289ff;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  #openBtn:hover {
-    background: #b289ff;
-    color: black;
-    text-shadow: none;
-  }
-  #countdown {
-    margin-top: 15px;
-    font-size: 1.1rem;
-    color: #ff66aa;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Переадресация...</title>
+  <style>
+    body {
+      background: #050006;
+      color: #a26cff;
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      user-select: none;
+      text-align: center;
+    }
+    button {
+      margin-top: 30px;
+      padding: 14px 40px;
+      font-size: 1.4rem;
+      background: #a26cff;
+      border: none;
+      border-radius: 8px;
+      color: black;
+      cursor: pointer;
+      box-shadow: 0 0 15px #a26cff;
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background: #8a52ff;
+      box-shadow: 0 0 25px #8a52ff;
+    }
+    .timer {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #d0bfff;
+    }
+  </style>
 </head>
 <body>
-  <div id="msg">Переадресация на Telegram...<br>Если переход не начался, нажмите кнопку ниже.</div>
+  <div>Переадресация на Telegram…</div>
   <button id="openBtn">Открыть в Telegram</button>
-  <div id="countdown">Автоматический переход через <span id="timer">3</span> секунд</div>
-<script>
-  const btn = document.getElementById('openBtn');
-  const timerEl = document.getElementById('timer');
-  let countdown = 3;
+  <div class="timer" id="timer">3</div>
 
-  btn.onclick = () => {
-    window.location.href = ${JSON.stringify(realUrl)};
-  };
+  <script>
+    const openBtn = document.getElementById('openBtn');
+    const timerElem = document.getElementById('timer');
+    let seconds = 3;
 
-  const interval = setInterval(() => {
-    countdown--;
-    timerEl.textContent = countdown;
-    if (countdown <= 0) {
-      clearInterval(interval);
-      window.location.href = ${JSON.stringify(realUrl)};
+    function redirect() {
+      location.href = ${JSON.stringify(realUrl)};
     }
-  }, 1000);
-<\/script>
-</body>
-</html>`;
 
-    const blob = new Blob([page], { type: 'text/html' });
+    openBtn.onclick = redirect;
+
+    const interval = setInterval(() => {
+      seconds--;
+      timerElem.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        redirect();
+      }
+    }, 1000);
+  <\/script>
+</body>
+</html>
+    `;
+    const blob = new Blob([blobPage], { type: 'text/html' });
     const blobUrl = URL.createObjectURL(blob);
     window.open(blobUrl, '_blank', 'noopener,noreferrer');
   }
@@ -253,14 +248,14 @@ DOMA SHOP — где каждая покупка становится событ
     container.appendChild(btn);
   });
 
-  // Кнопка "ОПЕРАТОР" — сразу открывает tg://user без blob
+  // Кнопка "ОПЕРАТОР" — сразу открывает tg://user
   const operatorBtn = document.createElement('button');
   operatorBtn.textContent = 'ОПЕРАТОР';
   operatorBtn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
   operatorBtn.onclick = () => { location.href = operatorLink; };
   container.appendChild(operatorBtn);
 
-  // Защита
+  // Защита от копирования, контекстного меню, клавиш разработчика
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
