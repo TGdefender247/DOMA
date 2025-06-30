@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DOMA SHOP</title>
+  <title>DOMA SHOP — Darknet Portal</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -147,12 +147,12 @@ DOMA SHOP — где каждая покупка становится событ
   resize();
   setInterval(draw, 50);
 
-  // Реальные Telegram-ссылки
+  // Реальные ссылки Telegram
   const realLinks = {
     "БОТ": "tg://resolve?domain=Doma111_bot",
-    "НОВОСТИ": "https://t.me/+r_YNyC6D2BljMzcy",
-    "ОТЗЫВЫ": "https://t.me/+6LPNuuSTKzMyMmJi",
-    "ЧАТ": "https://t.me/+2h-o-940Sj42Yjdh",
+    "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
+    "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
+    "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh",
     "ОПЕРАТОР": "tg://user?id=7970987069"
   };
 
@@ -161,19 +161,36 @@ DOMA SHOP — где каждая покупка становится событ
     "https://redirect.shadow.net", "https://node.access.system"
   ];
 
-  function openViaBlob(realUrl) {
-    const page = `
+  // Функция создания и перехода на blob страницу с редиректом в tg://
+  function openTelegramBlob(tgUrl) {
+    const redirectPage = `
 <!DOCTYPE html>
-<html lang="ru"><head><meta charset="UTF-8"><title>Redirect...</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" /></head>
-<body style="background:#0a0a0a; color:#b289ff; font-family:'Share Tech Mono', monospace; display:flex; align-items:center; justify-content:center; height:100vh;">
+<html lang="ru"><head><meta charset="UTF-8"><title>Redirecting...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body {
+    margin:0; background:#0a0a0a; color:#b289ff;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh; user-select:none;
+  }
+</style>
+</head>
+<body>
   <div>Переадресация...<br>Telegram откроется автоматически</div>
-  <script>setTimeout(()=>{ location.href = ${JSON.stringify(realUrl)}; }, 5000);<\/script>
-</body></html>
-    `;
-    const blob = new Blob([page], { type: 'text/html' });
+  <script>
+    setTimeout(() => {
+      location.href = ${JSON.stringify(tgUrl)};
+    }, 3000);
+  <\/script>
+</body>
+</html>`;
+
+    const blob = new Blob([redirectPage], { type: 'text/html' });
     const blobUrl = URL.createObjectURL(blob);
-    window.open(blobUrl, '_blank', 'noopener,noreferrer');
+
+    // Переходим на blob в той же вкладке, чтобы адрес в браузере не светился
+    window.location.href = blobUrl;
   }
 
   const container = document.getElementById('container');
@@ -182,14 +199,15 @@ DOMA SHOP — где каждая покупка становится событ
     btn.textContent = label;
     btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
 
-    btn.onclick = () => {
-      openViaBlob(url);
+    btn.onclick = e => {
+      e.preventDefault();
+      openTelegramBlob(url);
     };
 
     container.appendChild(btn);
   });
 
-  // Защита
+  // Защита от DevTools, копирования, правого клика
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
@@ -204,6 +222,7 @@ DOMA SHOP — где каждая покупка становится событ
   document.body.oncontextmenu = e => e.preventDefault();
   document.body.oncopy = e => e.preventDefault();
   document.body.oncut = e => e.preventDefault();
+
 </script>
 
 </body>
