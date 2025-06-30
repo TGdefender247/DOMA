@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DOMA SHOP</title>
+  <title>DOMA SHOP — Darknet Portal</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -14,6 +14,7 @@
       user-select: none;
       overflow-x: hidden;
     }
+
     canvas.matrix {
       position: fixed;
       top: 0; left: 0;
@@ -23,6 +24,7 @@
       display: block;
       background: #050006;
     }
+
     #content {
       position: relative;
       z-index: 10;
@@ -36,33 +38,35 @@
       justify-content: center;
       min-height: 100vh;
     }
+
     h1 {
       font-size: 3rem;
       color: #e0d0ff;
       text-shadow: 0 0 6px #a26cff, 0 0 12px #8a2eff, 0 0 25px #6000c0;
-      user-select: text;
     }
+
     p.futuristic-text {
       font-size: 1.1rem;
       color: #d0c0ff;
       text-shadow: 0 0 4px #b079ff, 0 0 8px #9f66ff;
       white-space: pre-line;
       line-height: 1.5;
-      user-select: text;
     }
+
     p.telegram-warning {
       color: #ff3b3b;
       font-weight: bold;
       font-size: 1.3rem;
       text-shadow: 0 0 3px #800, 0 0 5px #c00;
-      user-select: text;
     }
+
     #container {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 20px;
     }
+
     button {
       background: transparent;
       border: 2px solid #a26cff;
@@ -75,12 +79,14 @@
       transition: 0.3s ease;
       user-select: none;
     }
+
     button:hover {
       background: #a26cff;
       color: black;
       text-shadow: none;
       box-shadow: 0 0 15px #a26cff;
     }
+
     @media (max-width: 600px) {
       h1 { font-size: 2rem; }
       button { font-size: 1rem; padding: 10px 24px; }
@@ -94,11 +100,11 @@
 <div id="content">
   <h1>DOMA SHOP 🕸</h1>
   <p class="futuristic-text">
-DOMA SHOP — где каждая покупка становится событием!
+DOMA SHOP — где каждая покупка становится событием!  
 
 🔥 *Лучшие товары* — отобранные с безупречным вкусом.  
 ⚡️ *Молниеносный сервис* — вам остается только наслаждаться.  
-💎 *Эксклюзивные предложения* — то, чего нет у других.
+💎 *Эксклюзивные предложения* — то, чего нет у других.  
 
 Добро пожаловать в мир премиального шопинга! 🚀
   </p>
@@ -165,71 +171,71 @@ DOMA SHOP — где каждая покупка становится событ
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Переадресация...</title>
-  <style>
-    body {
-      background: #050006;
-      color: #a26cff;
-      font-family: 'Share Tech Mono', monospace;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      user-select: none;
-      text-align: center;
-    }
-    button {
-      margin-top: 30px;
-      padding: 14px 40px;
-      font-size: 1.4rem;
-      background: #a26cff;
-      border: none;
-      border-radius: 8px;
-      color: black;
-      cursor: pointer;
-      box-shadow: 0 0 15px #a26cff;
-      transition: background 0.3s ease;
-      user-select: none;
-    }
-    button:hover {
-      background: #8a52ff;
-      box-shadow: 0 0 25px #8a52ff;
-    }
-    .timer {
-      margin-top: 15px;
-      font-size: 1.2rem;
-      color: #d0bfff;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Переадресация...</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    height: 100vh;
+    background: #0a0a0a;
+    color: #b289ff;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    user-select: none;
+  }
+  button {
+    margin-top: 20px;
+    padding: 12px 28px;
+    border: 2px solid #b289ff;
+    background: transparent;
+    color: #b289ff;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    text-shadow: 0 0 6px #b289ff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  button:hover {
+    background: #b289ff;
+    color: black;
+    text-shadow: none;
+  }
+</style>
 </head>
 <body>
-  <div>Переадресация на Telegram…</div>
+  <div>Переадресация на Telegram...</div>
+  <div id="countdown" style="margin-top: 10px; font-size: 1.1rem;">Через 3 секунды</div>
   <button id="openBtn">Открыть в Telegram</button>
-  <div class="timer" id="timer">3</div>
 
   <script>
-    const openBtn = document.getElementById('openBtn');
-    const timerElem = document.getElementById('timer');
-    let seconds = 3;
+    (function() {
+      let countdown = 3;
+      const countdownEl = document.getElementById('countdown');
+      const openBtn = document.getElementById('openBtn');
+      const realUrl = ${JSON.stringify(realUrl)};
 
-    function redirect() {
-      location.href = ${JSON.stringify(realUrl)};
-    }
+      const timer = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+          countdownEl.textContent = 'Через ' + countdown + ' секунду' + (countdown === 1 ? '' : 'ы');
+        } else {
+          clearInterval(timer);
+          countdownEl.textContent = 'Переход...';
+          window.location.href = realUrl;
+        }
+      }, 1000);
 
-    openBtn.onclick = redirect;
-
-    const interval = setInterval(() => {
-      seconds--;
-      timerElem.textContent = seconds;
-      if (seconds <= 0) {
-        clearInterval(interval);
-        redirect();
-      }
-    }, 1000);
+      openBtn.onclick = () => {
+        clearInterval(timer);
+        window.location.href = realUrl;
+      };
+    })();
   <\/script>
 </body>
 </html>
@@ -248,14 +254,14 @@ DOMA SHOP — где каждая покупка становится событ
     container.appendChild(btn);
   });
 
-  // Кнопка "ОПЕРАТОР" — сразу открывает tg://user
+  // Кнопка "ОПЕРАТОР" — сразу открывает tg://user без промежуточных страниц
   const operatorBtn = document.createElement('button');
   operatorBtn.textContent = 'ОПЕРАТОР';
   operatorBtn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
   operatorBtn.onclick = () => { location.href = operatorLink; };
   container.appendChild(operatorBtn);
 
-  // Защита от копирования, контекстного меню, клавиш разработчика
+  // Защита от DevTools, копирования и контекстного меню
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
