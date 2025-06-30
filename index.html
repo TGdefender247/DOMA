@@ -147,7 +147,6 @@ DOMA SHOP — где каждая покупка становится событ
   resize();
   setInterval(draw, 50);
 
-  // Реальные ссылки Telegram
   const realLinks = {
     "БОТ": "tg://resolve?domain=Doma111_bot",
     "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
@@ -161,36 +160,22 @@ DOMA SHOP — где каждая покупка становится событ
     "https://redirect.shadow.net", "https://node.access.system"
   ];
 
-  // Функция создания и перехода на blob страницу с редиректом в tg://
-  function openTelegramBlob(tgUrl) {
-    const redirectPage = `
-<!DOCTYPE html>
-<html lang="ru"><head><meta charset="UTF-8"><title>Redirecting...</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  body {
-    margin:0; background:#0a0a0a; color:#b289ff;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex; justify-content: center; align-items: center;
-    height: 100vh; user-select:none;
+  // Проверка, мобильное ли устройство
+  function isMobile() {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
-</style>
-</head>
-<body>
-  <div>Переадресация...<br>Telegram откроется автоматически</div>
-  <script>
-    setTimeout(() => {
-      location.href = ${JSON.stringify(tgUrl)};
-    }, 3000);
-  <\/script>
-</body>
-</html>`;
 
-    const blob = new Blob([redirectPage], { type: 'text/html' });
-    const blobUrl = URL.createObjectURL(blob);
+  function openTelegramLink(tgUrl) {
+    if (isMobile()) {
+      // На мобильных просто перенаправляем напрямую
+      window.location.href = tgUrl;
 
-    // Переходим на blob в той же вкладке, чтобы адрес в браузере не светился
-    window.location.href = blobUrl;
+      // Чтобы скрыть URL и не открывать браузерные страницы, не делаем больше ничего
+      // Потому что в мобильных браузерах это откроет Telegram
+    } else {
+      // На десктопах - показываем alert
+      alert("Пожалуйста, откройте эту страницу на мобильном устройстве с установленным Telegram.");
+    }
   }
 
   const container = document.getElementById('container');
@@ -198,12 +183,10 @@ DOMA SHOP — где каждая покупка становится событ
     const btn = document.createElement('button');
     btn.textContent = label;
     btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
-
     btn.onclick = e => {
       e.preventDefault();
-      openTelegramBlob(url);
+      openTelegramLink(url);
     };
-
     container.appendChild(btn);
   });
 
