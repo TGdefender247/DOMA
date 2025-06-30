@@ -3,91 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DOMA SHOP — Darknet Portal</title>
+  <title>DOMA SHOP</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     html, body {
       height: 100%;
-      background: #050006;
-      color: #f0e6ff;
+      background: #0a0a0a;
+      color: #f0f0ff;
       font-family: 'Share Tech Mono', monospace;
       user-select: none;
-      overflow-x: hidden;
+      overflow: hidden;
     }
-
     canvas.matrix {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100vw;
       height: 100vh;
       z-index: 0;
-      display: block;
-      background: #050006;
+      background: #0a0a0a;
     }
-
     #content {
       position: relative;
       z-index: 10;
-      max-width: 800px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 50px 20px;
       text-align: center;
       display: flex;
       flex-direction: column;
       gap: 30px;
-      justify-content: center;
       min-height: 100vh;
+      justify-content: center;
     }
-
     h1 {
-      font-size: 3rem;
-      color: #e0d0ff;
-      text-shadow: 0 0 6px #a26cff, 0 0 12px #8a2eff, 0 0 25px #6000c0;
+      font-size: 3.5rem;
+      color: #f0f0ff;
+      text-shadow: 0 0 10px #9a4bff, 0 0 20px #6e3fff;
     }
-
     p.futuristic-text {
-      font-size: 1.1rem;
-      color: #d0c0ff;
-      text-shadow: 0 0 4px #b079ff, 0 0 8px #9f66ff;
+      font-size: 1.15rem;
+      color: #f0f0ff;
+      text-shadow: 0 0 5px #b289ff, 0 0 10px #9c78ff;
       white-space: pre-line;
-      line-height: 1.5;
+      line-height: 1.6;
     }
-
     p.telegram-warning {
       color: #ff3b3b;
       font-weight: bold;
-      font-size: 1.3rem;
-      text-shadow: 0 0 3px #800, 0 0 5px #c00;
+      font-size: 1.2rem;
+      text-shadow: 0 0 4px #a00;
     }
-
     #container {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 20px;
     }
-
     button {
       background: transparent;
-      border: 2px solid #a26cff;
-      color: #a26cff;
+      border: 2px solid #b289ff;
+      color: #b289ff;
+      font-family: 'Share Tech Mono', monospace;
       font-size: 1.2rem;
-      padding: 12px 30px;
-      border-radius: 8px;
+      padding: 12px 28px;
       cursor: pointer;
-      text-shadow: 0 0 6px #a26cff;
-      transition: 0.3s ease;
+      border-radius: 6px;
+      text-shadow: 0 0 5px #b289ff;
+      transition: all 0.3s ease;
     }
-
     button:hover {
-      background: #a26cff;
-      color: black;
-      text-shadow: none;
-      box-shadow: 0 0 15px #a26cff;
+      background: #b289ff;
+      color: #000;
+      box-shadow: 0 0 15px #b289ff;
     }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 2rem; }
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      p.futuristic-text { font-size: 1rem; }
       button { font-size: 1rem; padding: 10px 24px; }
     }
   </style>
@@ -97,7 +93,7 @@
 <canvas class="matrix"></canvas>
 
 <div id="content">
-  <h1>DOMA SHOP 🕸</h1>
+  <h1>DOMA SHOP 🕸️ </h1>
   <p class="futuristic-text">
 DOMA SHOP — где каждая покупка становится событием!  
 
@@ -108,94 +104,90 @@ DOMA SHOP — где каждая покупка становится событ
 Добро пожаловать в мир премиального шопинга! 🚀
   </p>
 
-  <p class="telegram-warning">Убедитесь, что Telegram установлен. Переходы откроются через приложение.</p>
+  <p class="telegram-warning">На вашем устройстве обязательно должен быть установлен Telegram</p>
+
   <div id="container"></div>
 </div>
 
 <script>
-  // Анимация матрицы (фиолетовая)
+  // Анимация "матрицы"
   const canvas = document.querySelector('canvas.matrix');
   const ctx = canvas.getContext('2d');
-  let width, height, columns, drops = [];
-  const word = "DOMA SHOP ";
-  const wordLen = word.length;
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+  const columns = Math.floor(width / 16);
+  const drops = Array(columns).fill(1);
+  const symbols = "DOMASHOP";
 
-  function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    columns = Math.floor(width / 16);
-    drops = Array(columns).fill(0);
-  }
-
-  function draw() {
-    ctx.fillStyle = "rgba(0, 0, 20, 0.15)";
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
     ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = "#a26cff";
+    ctx.fillStyle = "#b289ff";
     ctx.font = "16px monospace";
-
     for (let i = 0; i < drops.length; i++) {
-      let char = word.charAt(Math.floor(Math.random() * wordLen));
+      const char = symbols.charAt(Math.floor(Math.random() * symbols.length));
       ctx.fillText(char, i * 16, drops[i] * 16);
-      if (drops[i] * 16 > height && Math.random() > 0.975) drops[i] = 0;
-      drops[i]++;
+      drops[i] = drops[i] * 16 > height && Math.random() > 0.975 ? 0 : drops[i] + 1;
     }
   }
+  setInterval(drawMatrix, 50);
+  window.addEventListener('resize', () => location.reload());
 
-  window.addEventListener('resize', resize);
-  resize();
-  setInterval(draw, 50);
-
+  // Реальные ссылки
   const realLinks = {
     "БОТ": "tg://resolve?domain=Doma111_bot",
-    "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
-    "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
-    "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh"
+    "НОВОСТИ": "https://t.me/+r_YNyC6D2BljMzcy",
+    "ОТЗЫВЫ": "https://t.me/+6LPNuuSTKzMyMmJi",
+    "ЧАТ": "https://t.me/+2h-o-940Sj42Yjdh",
+    "ОПЕРАТОР": "tg://user?id=7970987069"
   };
 
-  const operatorLink = "tg://user?id=7970987069";
-  const fakeLinks = [
-    "https://proxy1.fake.net", "https://redirect.secure.page",
-    "https://join-hidden-portal.com", "https://node.access.route"
-  ];
+  const fakeLinks = ["https://proxy.shadow01.net", "https://deepnode.link", "https://secure-dark.link"];
+  const container = document.getElementById('container');
 
-  function openViaBlob(realUrl) {
-    const page = `
-<!DOCTYPE html>
-<html lang="ru"><head><meta charset="UTF-8"><title>Redirect...</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" /></head>
-<body style="background:#0a0a0a; color:#b289ff; font-family:'Share Tech Mono', monospace; display:flex; align-items:center; justify-content:center; height:100vh;">
-  <div>Переадресация...<br>Telegram откроется автоматически</div>
-  <script>setTimeout(()=>{location.href=${JSON.stringify(realUrl)}},5000);<\/script>
-</body></html>
-    `;
-    const blob = new Blob([page], { type: 'text/html' });
+  function openWithBlob(real) {
+    const fake = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+    const isTG = real.startsWith("tg://") || real.includes("t.me/");
+
+    // Чаты с + заменяем на tg://join?invite=
+    if (real.includes("t.me/+")) {
+      const invite = real.split("/+")[1];
+      real = tg://join?invite=${invite};
+    }
+
+    if (real === "tg://user?id=7970987069") {
+      // Оператор — прямой переход
+      location.href = real;
+      return;
+    }
+
+    const html = `
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>...</title><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body style="margin:0;background:#000;color:#b289ff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;">
+  <div>Переадресация в Telegram…</div>
+  <script>
+    setTimeout(() => {
+      location.href = ${JSON.stringify(real)};
+    }, 5000);
+  <\/script>
+</body></html>`;
+    const blob = new Blob([html], { type: 'text/html' });
     const blobUrl = URL.createObjectURL(blob);
     window.open(blobUrl, '_blank', 'noopener,noreferrer');
   }
 
-  const container = document.getElementById('container');
   Object.entries(realLinks).forEach(([label, url]) => {
     const btn = document.createElement('button');
     btn.textContent = label;
     btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
-    btn.onclick = () => openViaBlob(url);
+    btn.onclick = () => openWithBlob(url);
     container.appendChild(btn);
   });
 
-  // Кнопка "ОПЕРАТОР" — сразу открывает tg://user
-  const operatorBtn = document.createElement('button');
-  operatorBtn.textContent = 'ОПЕРАТОР';
-  operatorBtn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
-  operatorBtn.onclick = () => { location.href = operatorLink };
-  container.appendChild(operatorBtn);
-
-  // Защита
+  // Блокировка DevTools и контекстного меню
   document.addEventListener('keydown', e => {
-    if (e.key === 'F12'  (e.ctrlKey && e.shiftKey && e.key === 'I')  (e.ctrlKey && e.key === 'U')) {
-      e.preventDefault();
-      alert('Доступ запрещён');
+    if (e.key === 'F12'  (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')  (e.ctrlKey && e.key.toLowerCase() === 'u')) {
+      e.preventDefault(); alert('Доступ запрещён');
     }
   });
   document.body.oncontextmenu = e => e.preventDefault();
