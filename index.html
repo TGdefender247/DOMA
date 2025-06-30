@@ -14,7 +14,6 @@
       user-select: none;
       overflow-x: hidden;
     }
-
     canvas.matrix {
       position: fixed;
       top: 0; left: 0;
@@ -24,7 +23,6 @@
       display: block;
       background: #050006;
     }
-
     #content {
       position: relative;
       z-index: 10;
@@ -38,14 +36,12 @@
       justify-content: center;
       min-height: 100vh;
     }
-
     h1 {
       font-size: 3rem;
       color: #e0d0ff;
       text-shadow: 0 0 6px #a26cff, 0 0 12px #8a2eff, 0 0 25px #6000c0;
       user-select: text;
     }
-
     p.futuristic-text {
       font-size: 1.1rem;
       color: #d0c0ff;
@@ -54,7 +50,6 @@
       line-height: 1.5;
       user-select: text;
     }
-
     p.telegram-warning {
       color: #ff3b3b;
       font-weight: bold;
@@ -62,14 +57,12 @@
       text-shadow: 0 0 3px #800, 0 0 5px #c00;
       user-select: text;
     }
-
     #container {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 20px;
     }
-
     button {
       background: transparent;
       border: 2px solid #a26cff;
@@ -82,7 +75,6 @@
       transition: 0.3s ease;
       user-select: none;
     }
-
     button:hover,
     button:focus {
       background: #a26cff;
@@ -91,7 +83,6 @@
       box-shadow: 0 0 15px #a26cff;
       outline: none;
     }
-
     @media (max-width: 600px) {
       h1 { font-size: 2rem; }
       button { font-size: 1rem; padding: 10px 24px; }
@@ -153,13 +144,14 @@ DOMA SHOP — где каждая покупка становится событ
     resize();
     setInterval(draw, 50);
 
-    // Ссылки Telegram
+    // Telegram-ссылки
     const realLinks = {
       "БОТ": "tg://resolve?domain=Doma111_bot",
       "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
       "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
       "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh",
     };
+
     const operatorLink = "tg://user?id=7970987069";
 
     // Проверка мобильного устройства
@@ -167,37 +159,53 @@ DOMA SHOP — где каждая покупка становится событ
       return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
-    // Открыть ссылку в Telegram на мобильных, на ПК предупреждение
-    function openTelegramLink(url) {
+    // Метод открытия tg:// ссылки на мобильных: создаём iframe и через таймаут меняем window.location, чтобы обеспечить 100% открытие
+    function openTelegramUrl(url) {
       if (!isMobile()) {
         alert('Пожалуйста, откройте эту страницу на мобильном устройстве с установленным Telegram.');
         return;
       }
-      window.location.href = url;
+
+      // Создаем iframe с tg-ссылкой, чтобы вызвать Telegram
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = url;
+      document.body.appendChild(iframe);
+
+      // После 1.5 сек пробуем сменить window.location.href как запасной вариант
+      setTimeout(() => {
+        window.location.href = url;
+      }, 1500);
+
+      // Через 3 секунды удаляем iframe (чистим DOM)
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+      }, 3000);
     }
 
-    // Создаём кнопки
+    // Создаем кнопки и назначаем обработчики
     const container = document.getElementById('container');
+
     Object.entries(realLinks).forEach(([label, url]) => {
       const btn = document.createElement('button');
       btn.textContent = label;
       btn.onclick = e => {
         e.preventDefault();
-        openTelegramLink(url);
+        openTelegramUrl(url);
       };
       container.appendChild(btn);
     });
 
-    // Кнопка ОПЕРАТОР - открывается сразу (tg://user?id=...)
+    // Кнопка ОПЕРАТОР
     const operatorBtn = document.createElement('button');
     operatorBtn.textContent = "ОПЕРАТОР";
     operatorBtn.onclick = e => {
       e.preventDefault();
-      openTelegramLink(operatorLink);
+      openTelegramUrl(operatorLink);
     };
     container.appendChild(operatorBtn);
 
-    // Защита: запрет F12, Ctrl+Shift+I, Ctrl+U
+    // Защита от DevTools и копирования
     document.addEventListener('keydown', e => {
       if (
         e.key === 'F12' ||
@@ -208,8 +216,6 @@ DOMA SHOP — где каждая покупка становится событ
         alert('Доступ запрещён');
       }
     });
-
-    // Запрет контекстного меню, копирования, вырезания
     document.body.oncontextmenu = e => e.preventDefault();
     document.body.oncopy = e => e.preventDefault();
     document.body.oncut = e => e.preventDefault();
