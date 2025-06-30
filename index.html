@@ -68,6 +68,9 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 20px;
+      z-index: 20;
+      position: relative;
+      user-select: none;
     }
 
     button {
@@ -81,6 +84,8 @@
       text-shadow: 0 0 6px #a26cff;
       transition: 0.3s ease;
       user-select: none;
+      min-width: 110px;
+      white-space: nowrap;
     }
 
     button:hover, button:focus {
@@ -152,14 +157,13 @@ DOMA SHOP — где каждая покупка становится событ
   resize();
   setInterval(draw, 50);
 
-  // Ссылки Telegram
+  // Telegram ссылки
   const realLinks = {
     "БОТ": "tg://resolve?domain=Doma111_bot",
     "НОВОСТИ": "tg://join?invite=r_YNyC6D2BljMzcy",
     "ОТЗЫВЫ": "tg://join?invite=6LPNuuSTKzMyMmJi",
     "ЧАТ": "tg://join?invite=2h-o-940Sj42Yjdh"
   };
-
   const operatorLink = "tg://user?id=7970987069";
 
   const fakeLinks = [
@@ -169,7 +173,7 @@ DOMA SHOP — где каждая покупка становится событ
     "https://node.access.route"
   ];
 
-  // Функция для открытия blob-страницы с обратным отсчётом и кнопкой
+  // Функция открытия blob с таймером и кнопкой
   function openViaBlob(realUrl) {
     const blobPage = `
 <!DOCTYPE html>
@@ -234,7 +238,7 @@ DOMA SHOP — где каждая покупка становится событ
       countdownEl.textContent = countdown;
     }
   }, 1000);
-</script>
+<\/script>
 </body>
 </html>
     `;
@@ -252,7 +256,7 @@ DOMA SHOP — где каждая покупка становится событ
     container.appendChild(btn);
   });
 
-  // Кнопка "ОПЕРАТОР" — сразу открывает tg://user?id=...
+  // Кнопка оператора — прямой переход
   const operatorBtn = document.createElement('button');
   operatorBtn.textContent = 'ОПЕРАТОР';
   operatorBtn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
