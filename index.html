@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DOMA SHOP</title>
+  <title>DOMA SHOP — Darknet Portal</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -151,48 +151,100 @@ DOMA SHOP — где каждая покупка становится событ
   resize();
   setInterval(draw, 50);
 
-  // Правильные ссылки для Telegram
   const realLinks = {
     "БОТ": "tg://resolve?domain=Doma111_bot",
-    "НОВОСТИ": "tg://join?invite=r_YNyC6D2BljMzcy",
-    "ОТЗЫВЫ": "tg://join?invite=6LPNuuSTKzMyMmJi",
-    "ЧАТ": "tg://join?invite=2h-o-940Sj42Yjdh"
+    "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
+    "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
+    "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh"
   };
 
   const operatorLink = "tg://user?id=7970987069";
-
   const fakeLinks = [
-    "https://proxy1.fake.net",
-    "https://redirect.secure.page",
-    "https://join-hidden-portal.com",
-    "https://node.access.route"
-  ];
+    "https://proxy1.fake.net", "https://redirect.secure.page",
+    "https://join-hidden-portal.com", "https://node.access.route"
+      ];
 
+  // Создаём blob-страницу с таймером и редиректом
   function openViaBlob(realUrl) {
     const page = `
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Redirect...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<title>Переадресация...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  body {
+    background: #0a0a0a;
+    color: #b289ff;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    user-select: none;
+  }
+  #msg {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  #openBtn {
+    font-size: 1.3rem;
+    padding: 12px 28px;
+    border: 2px solid #b289ff;
+    border-radius: 8px;
+    background: transparent;
+    color: #b289ff;
+    cursor: pointer;
+    text-shadow: 0 0 6px #b289ff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  #openBtn:hover {
+    background: #b289ff;
+    color: black;
+    text-shadow: none;
+  }
+  #countdown {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    color: #ff66aa;
+  }
+</style>
 </head>
-<body style="background:#0a0a0a; color:#b289ff; font-family:'Share Tech Mono', monospace; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;">
-  <div>Переадресация...<br>Telegram откроется автоматически</div>
-  <script>
-    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 3000);
-  <\/script>
+<body>
+  <div id="msg">Переадресация на Telegram...<br>Если переход не начался, нажмите кнопку ниже.</div>
+  <button id="openBtn">Открыть в Telegram</button>
+  <div id="countdown">Автоматический переход через <span id="timer">3</span> секунд</div>
+<script>
+  const btn = document.getElementById('openBtn');
+  const timerEl = document.getElementById('timer');
+  let countdown = 3;
+
+  btn.onclick = () => {
+    window.location.href = ${JSON.stringify(realUrl)};
+  };
+
+  const interval = setInterval(() => {
+    countdown--;
+    timerEl.textContent = countdown;
+    if (countdown <= 0) {
+      clearInterval(interval);
+      window.location.href = ${JSON.stringify(realUrl)};
+    }
+  }, 1000);
+<\/script>
 </body>
 </html>`;
+
     const blob = new Blob([page], { type: 'text/html' });
     const blobUrl = URL.createObjectURL(blob);
-    // Открываем blob в новом окне/вкладке
     window.open(blobUrl, '_blank', 'noopener,noreferrer');
   }
 
   const container = document.getElementById('container');
-
-  // Создаем кнопки с переходом через blob (кроме оператора)
   Object.entries(realLinks).forEach(([label, url]) => {
     const btn = document.createElement('button');
     btn.textContent = label;
@@ -201,16 +253,14 @@ DOMA SHOP — где каждая покупка становится событ
     container.appendChild(btn);
   });
 
-  // Оператор — прямой переход без blob
+  // Кнопка "ОПЕРАТОР" — сразу открывает tg://user без blob
   const operatorBtn = document.createElement('button');
   operatorBtn.textContent = 'ОПЕРАТОР';
   operatorBtn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
-  operatorBtn.onclick = () => {
-    location.href = operatorLink;
-  };
+  operatorBtn.onclick = () => { location.href = operatorLink; };
   container.appendChild(operatorBtn);
 
-  // Защита от копирования и клавиш разработчика
+  // Защита
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
@@ -221,7 +271,6 @@ DOMA SHOP — где каждая покупка становится событ
       alert('Доступ запрещён');
     }
   });
-
   document.body.oncontextmenu = e => e.preventDefault();
   document.body.oncopy = e => e.preventDefault();
   document.body.oncut = e => e.preventDefault();
