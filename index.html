@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DOMA SHOP — Darknet Portal</title>
+  <title>DOMA SHOP</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -14,6 +14,7 @@
       user-select: none;
       overflow-x: hidden;
     }
+
     canvas.matrix {
       position: fixed;
       top: 0; left: 0;
@@ -23,6 +24,7 @@
       display: block;
       background: #050006;
     }
+
     #content {
       position: relative;
       z-index: 10;
@@ -36,12 +38,14 @@
       justify-content: center;
       min-height: 100vh;
     }
+
     h1 {
       font-size: 3rem;
       color: #e0d0ff;
       text-shadow: 0 0 6px #a26cff, 0 0 12px #8a2eff, 0 0 25px #6000c0;
       user-select: text;
     }
+
     p.futuristic-text {
       font-size: 1.1rem;
       color: #d0c0ff;
@@ -50,6 +54,7 @@
       line-height: 1.5;
       user-select: text;
     }
+
     p.telegram-warning {
       color: #ff3b3b;
       font-weight: bold;
@@ -57,12 +62,14 @@
       text-shadow: 0 0 3px #800, 0 0 5px #c00;
       user-select: text;
     }
+
     #container {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 20px;
     }
+
     button {
       background: transparent;
       border: 2px solid #a26cff;
@@ -75,14 +82,14 @@
       transition: 0.3s ease;
       user-select: none;
     }
-    button:hover,
-    button:focus {
+
+    button:hover {
       background: #a26cff;
       color: black;
       text-shadow: none;
       box-shadow: 0 0 15px #a26cff;
-      outline: none;
     }
+
     @media (max-width: 600px) {
       h1 { font-size: 2rem; }
       button { font-size: 1rem; padding: 10px 24px; }
@@ -91,11 +98,11 @@
 </head>
 <body>
 
-  <canvas class="matrix"></canvas>
+<canvas class="matrix"></canvas>
 
-  <div id="content">
-    <h1>DOMA SHOP 🕸</h1>
-    <p class="futuristic-text">
+<div id="content">
+  <h1>DOMA SHOP 🕸</h1>
+  <p class="futuristic-text">
 DOMA SHOP — где каждая покупка становится событием!  
 
 🔥 *Лучшие товары* — отобранные с безупречным вкусом.  
@@ -103,123 +110,122 @@ DOMA SHOP — где каждая покупка становится событ
 💎 *Эксклюзивные предложения* — то, чего нет у других.  
 
 Добро пожаловать в мир премиального шопинга! 🚀
-    </p>
+  </p>
 
-    <p class="telegram-warning">Убедитесь, что Telegram установлен. Переходы откроются через приложение.</p>
-    <div id="container"></div>
-  </div>
+  <p class="telegram-warning">Убедитесь, что Telegram установлен. Переходы откроются через приложение.</p>
+  <div id="container"></div>
+</div>
 
+<script>
+  // Анимация матрицы (фиолетовая)
+  const canvas = document.querySelector('canvas.matrix');
+  const ctx = canvas.getContext('2d');
+  let width, height, columns, drops = [];
+  const word = "DOMA SHOP ";
+  const wordLen = word.length;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    columns = Math.floor(width / 16);
+    drops = Array(columns).fill(0);
+  }
+
+  function draw() {
+    ctx.fillStyle = "rgba(0, 0, 20, 0.15)";
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = "#a26cff";
+    ctx.font = "16px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      let char = word.charAt(Math.floor(Math.random() * wordLen));
+      ctx.fillText(char, i * 16, drops[i] * 16);
+      if (drops[i] * 16 > height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  setInterval(draw, 50);
+
+  // Правильные ссылки для Telegram
+  const realLinks = {
+    "БОТ": "tg://resolve?domain=Doma111_bot",
+    "НОВОСТИ": "tg://join?invite=r_YNyC6D2BljMzcy",
+    "ОТЗЫВЫ": "tg://join?invite=6LPNuuSTKzMyMmJi",
+    "ЧАТ": "tg://join?invite=2h-o-940Sj42Yjdh"
+  };
+
+  const operatorLink = "tg://user?id=7970987069";
+
+  const fakeLinks = [
+    "https://proxy1.fake.net",
+    "https://redirect.secure.page",
+    "https://join-hidden-portal.com",
+    "https://node.access.route"
+  ];
+
+  function openViaBlob(realUrl) {
+    const page = `
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirect...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body style="background:#0a0a0a; color:#b289ff; font-family:'Share Tech Mono', monospace; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;">
+  <div>Переадресация...<br>Telegram откроется автоматически</div>
   <script>
-    // Анимация матрицы (фиолетовая)
-    const canvas = document.querySelector('canvas.matrix');
-    const ctx = canvas.getContext('2d');
-    let width, height, columns, drops = [];
-    const word = "DOMA SHOP ";
-    const wordLen = word.length;
+    setTimeout(() => { location.href = ${JSON.stringify(realUrl)}; }, 3000);
+  <\/script>
+</body>
+</html>`;
+    const blob = new Blob([page], { type: 'text/html' });
+    const blobUrl = URL.createObjectURL(blob);
+    // Открываем blob в новом окне/вкладке
+    window.open(blobUrl, '_blank', 'noopener,noreferrer');
+  }
 
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-      columns = Math.floor(width / 16);
-      drops = Array(columns).fill(0);
-    }
+  const container = document.getElementById('container');
 
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 20, 0.15)";
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = "#a26cff";
-      ctx.font = "16px monospace";
+  // Создаем кнопки с переходом через blob (кроме оператора)
+  Object.entries(realLinks).forEach(([label, url]) => {
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+    btn.onclick = () => openViaBlob(url);
+    container.appendChild(btn);
+  });
 
-      for (let i = 0; i < drops.length; i++) {
-        let char = word.charAt(Math.floor(Math.random() * wordLen));
-        ctx.fillText(char, i * 16, drops[i] * 16);
-        if (drops[i] * 16 > height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
+  // Оператор — прямой переход без blob
+  const operatorBtn = document.createElement('button');
+  operatorBtn.textContent = 'ОПЕРАТОР';
+  operatorBtn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
+  operatorBtn.onclick = () => {
+    location.href = operatorLink;
+  };
+  container.appendChild(operatorBtn);
 
-    window.addEventListener('resize', resize);
-    resize();
-    setInterval(draw, 50);
-
-    // Telegram-ссылки
-    const realLinks = {
-      "БОТ": "tg://resolve?domain=Doma111_bot",
-      "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
-      "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
-      "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh",
-    };
-
-    const operatorLink = "tg://user?id=7970987069";
-
-    // Проверка мобильного устройства
-    function isMobile() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-
-    // Метод открытия tg:// ссылки на мобильных: создаём iframe и через таймаут меняем window.location, чтобы обеспечить 100% открытие
-    function openTelegramUrl(url) {
-      if (!isMobile()) {
-        alert('Пожалуйста, откройте эту страницу на мобильном устройстве с установленным Telegram.');
-        return;
-      }
-
-      // Создаем iframe с tg-ссылкой, чтобы вызвать Telegram
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = url;
-      document.body.appendChild(iframe);
-
-      // После 1.5 сек пробуем сменить window.location.href как запасной вариант
-      setTimeout(() => {
-        window.location.href = url;
-      }, 1500);
-
-      // Через 3 секунды удаляем iframe (чистим DOM)
-      setTimeout(() => {
-        document.body.removeChild(iframe);
-      }, 3000);
-    }
-
-    // Создаем кнопки и назначаем обработчики
-    const container = document.getElementById('container');
-
-    Object.entries(realLinks).forEach(([label, url]) => {
-      const btn = document.createElement('button');
-      btn.textContent = label;
-      btn.onclick = e => {
-        e.preventDefault();
-        openTelegramUrl(url);
-      };
-      container.appendChild(btn);
-    });
-
-    // Кнопка ОПЕРАТОР
-    const operatorBtn = document.createElement('button');
-    operatorBtn.textContent = "ОПЕРАТОР";
-    operatorBtn.onclick = e => {
+  // Защита от копирования и клавиш разработчика
+  document.addEventListener('keydown', e => {
+    if (
+      e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+      (e.ctrlKey && e.key.toLowerCase() === 'u')
+    ) {
       e.preventDefault();
-      openTelegramUrl(operatorLink);
-    };
-    container.appendChild(operatorBtn);
+      alert('Доступ запрещён');
+    }
+  });
 
-    // Защита от DevTools и копирования
-    document.addEventListener('keydown', e => {
-      if (
-        e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
-        (e.ctrlKey && e.key.toLowerCase() === 'u')
-      ) {
-        e.preventDefault();
-        alert('Доступ запрещён');
-      }
-    });
-    document.body.oncontextmenu = e => e.preventDefault();
-    document.body.oncopy = e => e.preventDefault();
-    document.body.oncut = e => e.preventDefault();
-  </script>
+  document.body.oncontextmenu = e => e.preventDefault();
+  document.body.oncopy = e => e.preventDefault();
+  document.body.oncut = e => e.preventDefault();
+</script>
 
 </body>
 </html>
