@@ -155,34 +155,33 @@ DOMA SHOP — где каждая покупка становится событ
     "ОПЕРАТОР": "tg://user?id=7970987069"
   };
 
-  const fakeLinks = [
-    "https://proxy1.fake.net", "https://hidden.page.link",
-    "https://redirect.shadow.net", "https://node.access.system"
-  ];
-
   // Проверка, мобильное ли устройство
   function isMobile() {
     return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-  function openTelegramLink(tgUrl) {
-    if (isMobile()) {
-      // На мобильных просто перенаправляем напрямую
-      window.location.href = tgUrl;
-
-      // Чтобы скрыть URL и не открывать браузерные страницы, не делаем больше ничего
-      // Потому что в мобильных браузерах это откроет Telegram
-    } else {
-      // На десктопах - показываем alert
-      alert("Пожалуйста, откройте эту страницу на мобильном устройстве с установленным Telegram.");
+  function openTelegramLink(url) {
+    if (!isMobile()) {
+      alert('Пожалуйста, откройте эту страницу на мобильном устройстве с установленным Telegram.');
+      return;
     }
+
+    // Создаем iframe и пытаемся открыть ссылку tg://
+    let iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = url;
+    document.body.appendChild(iframe);
+
+    // Через секунду удаляем iframe (чтобы не захламлять DOM)
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+    }, 2000);
   }
 
   const container = document.getElementById('container');
   Object.entries(realLinks).forEach(([label, url]) => {
     const btn = document.createElement('button');
     btn.textContent = label;
-    btn.title = fakeLinks[Math.floor(Math.random() * fakeLinks.length)];
     btn.onclick = e => {
       e.preventDefault();
       openTelegramLink(url);
