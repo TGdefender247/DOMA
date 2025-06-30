@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DOMA SHOP</title>
+  <title>DOMA SHOP — Darknet Portal</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -43,6 +43,7 @@
       font-size: 3rem;
       color: #e0d0ff;
       text-shadow: 0 0 6px #a26cff, 0 0 12px #8a2eff, 0 0 25px #6000c0;
+      user-select: text;
     }
 
     p.futuristic-text {
@@ -51,6 +52,7 @@
       text-shadow: 0 0 4px #b079ff, 0 0 8px #9f66ff;
       white-space: pre-line;
       line-height: 1.5;
+      user-select: text;
     }
 
     p.telegram-warning {
@@ -58,6 +60,7 @@
       font-weight: bold;
       font-size: 1.3rem;
       text-shadow: 0 0 3px #800, 0 0 5px #c00;
+      user-select: text;
     }
 
     #container {
@@ -77,13 +80,16 @@
       cursor: pointer;
       text-shadow: 0 0 6px #a26cff;
       transition: 0.3s ease;
+      user-select: none;
     }
 
-    button:hover {
+    button:hover,
+    button:focus {
       background: #a26cff;
       color: black;
       text-shadow: none;
       box-shadow: 0 0 15px #a26cff;
+      outline: none;
     }
 
     @media (max-width: 600px) {
@@ -94,11 +100,11 @@
 </head>
 <body>
 
-<canvas class="matrix"></canvas>
+  <canvas class="matrix"></canvas>
 
-<div id="content">
-  <h1>DOMA SHOP 🕸</h1>
-  <p class="futuristic-text">
+  <div id="content">
+    <h1>DOMA SHOP 🕸</h1>
+    <p class="futuristic-text">
 DOMA SHOP — где каждая покупка становится событием!  
 
 🔥 *Лучшие товары* — отобранные с безупречным вкусом.  
@@ -106,104 +112,108 @@ DOMA SHOP — где каждая покупка становится событ
 💎 *Эксклюзивные предложения* — то, чего нет у других.  
 
 Добро пожаловать в мир премиального шопинга! 🚀
-  </p>
+    </p>
 
-  <p class="telegram-warning">Убедитесь, что Telegram установлен. Переходы откроются через приложение.</p>
-  <div id="container"></div>
-</div>
+    <p class="telegram-warning">Убедитесь, что Telegram установлен. Переходы откроются через приложение.</p>
+    <div id="container"></div>
+  </div>
 
-<script>
-  // Матрица
-  const canvas = document.querySelector('canvas.matrix');
-  const ctx = canvas.getContext('2d');
-  let width, height, columns, drops = [];
-  const word = "DOMA SHOP ";
-  const wordLen = word.length;
+  <script>
+    // Анимация матрицы (фиолетовая)
+    const canvas = document.querySelector('canvas.matrix');
+    const ctx = canvas.getContext('2d');
+    let width, height, columns, drops = [];
+    const word = "DOMA SHOP ";
+    const wordLen = word.length;
 
-  function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    columns = Math.floor(width / 16);
-    drops = Array(columns).fill(0);
-  }
-
-  function draw() {
-    ctx.fillStyle = "rgba(0, 0, 20, 0.15)";
-    ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = "#a26cff";
-    ctx.font = "16px monospace";
-
-    for (let i = 0; i < drops.length; i++) {
-      let char = word.charAt(Math.floor(Math.random() * wordLen));
-      ctx.fillText(char, i * 16, drops[i] * 16);
-      if (drops[i] * 16 > height && Math.random() > 0.975) drops[i] = 0;
-      drops[i]++;
-    }
-  }
-
-  window.addEventListener('resize', resize);
-  resize();
-  setInterval(draw, 50);
-
-  const realLinks = {
-    "БОТ": "tg://resolve?domain=Doma111_bot",
-    "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
-    "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
-    "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh",
-    "ОПЕРАТОР": "tg://user?id=7970987069"
-  };
-
-  function isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  }
-
-  function openTelegramLink(url) {
-    if (!isMobile()) {
-      alert('Пожалуйста, откройте эту страницу на мобильном устройстве с установленным Telegram.');
-      return;
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      columns = Math.floor(width / 16);
+      drops = Array(columns).fill(0);
     }
 
-    // Принудительно открываем Telegram через iframe (чтобы не показывать браузер)
-    let iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = url;
-    document.body.appendChild(iframe);
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 20, 0.15)";
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "#a26cff";
+      ctx.font = "16px monospace";
 
-    setTimeout(() => {
-      document.body.removeChild(iframe);
-    }, 1500);
-  }
+      for (let i = 0; i < drops.length; i++) {
+        let char = word.charAt(Math.floor(Math.random() * wordLen));
+        ctx.fillText(char, i * 16, drops[i] * 16);
+        if (drops[i] * 16 > height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
 
-  const container = document.getElementById('container');
-  Object.entries(realLinks).forEach(([label, url]) => {
-    const btn = document.createElement('button');
-    btn.textContent = label;
-    btn.onclick = e => {
-      e.preventDefault();
-      openTelegramLink(url);
+    window.addEventListener('resize', resize);
+    resize();
+    setInterval(draw, 50);
+
+    // Ссылки Telegram
+    const realLinks = {
+      "БОТ": "tg://resolve?domain=Doma111_bot",
+      "НОВОСТИ": "tg://resolve?domain=r_YNyC6D2BljMzcy",
+      "ОТЗЫВЫ": "tg://resolve?domain=6LPNuuSTKzMyMmJi",
+      "ЧАТ": "tg://resolve?domain=2h-o-940Sj42Yjdh",
     };
-    container.appendChild(btn);
-  });
+    const operatorLink = "tg://user?id=7970987069";
 
-  // Защита от DevTools, копирования, правого клика
-  document.addEventListener('keydown', e => {
-    if (
-      e.key === 'F12' ||
-      (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
-      (e.ctrlKey && e.key.toLowerCase() === 'u')
-    ) {
-      e.preventDefault();
-      alert('Доступ запрещён');
+    // Проверка мобильного устройства
+    function isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
-  });
 
-  document.body.oncontextmenu = e => e.preventDefault();
-  document.body.oncopy = e => e.preventDefault();
-  document.body.oncut = e => e.preventDefault();
+    // Открыть ссылку в Telegram на мобильных, на ПК предупреждение
+    function openTelegramLink(url) {
+      if (!isMobile()) {
+        alert('Пожалуйста, откройте эту страницу на мобильном устройстве с установленным Telegram.');
+        return;
+      }
+      window.location.href = url;
+    }
 
-</script>
+    // Создаём кнопки
+    const container = document.getElementById('container');
+    Object.entries(realLinks).forEach(([label, url]) => {
+      const btn = document.createElement('button');
+      btn.textContent = label;
+      btn.onclick = e => {
+        e.preventDefault();
+        openTelegramLink(url);
+      };
+      container.appendChild(btn);
+    });
+
+    // Кнопка ОПЕРАТОР - открывается сразу (tg://user?id=...)
+    const operatorBtn = document.createElement('button');
+    operatorBtn.textContent = "ОПЕРАТОР";
+    operatorBtn.onclick = e => {
+      e.preventDefault();
+      openTelegramLink(operatorLink);
+    };
+    container.appendChild(operatorBtn);
+
+    // Защита: запрет F12, Ctrl+Shift+I, Ctrl+U
+    document.addEventListener('keydown', e => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+        (e.ctrlKey && e.key.toLowerCase() === 'u')
+      ) {
+        e.preventDefault();
+        alert('Доступ запрещён');
+      }
+    });
+
+    // Запрет контекстного меню, копирования, вырезания
+    document.body.oncontextmenu = e => e.preventDefault();
+    document.body.oncopy = e => e.preventDefault();
+    document.body.oncut = e => e.preventDefault();
+  </script>
 
 </body>
 </html>
