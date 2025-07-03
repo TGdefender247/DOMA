@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ВАШ МАГАЗИН</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -13,8 +14,8 @@
       font-family: 'Share Tech Mono', monospace;
       user-select: none;
       overflow-x: hidden;
+      font-size: 14px;
     }
-
     canvas.matrix {
       position: fixed;
       top: 0; left: 0;
@@ -24,81 +25,83 @@
       display: block;
       background: #050006;
     }
-
     #content {
       position: relative;
       z-index: 10;
-      max-width: 800px;
+      max-width: 600px;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 30px 12px;
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 20px;
       justify-content: center;
       min-height: 100vh;
     }
-
     h1 {
-      font-size: 3rem;
+      font-size: 1.8rem;
       color: #e0d0ff;
-      text-shadow: 0 0 6px #a26cff, 0 0 12px #8a2eff, 0 0 25px #6000c0;
+      text-shadow: 0 0 4px #a26cff, 0 0 8px #8a2eff, 0 0 20px #6000c0;
       user-select: text;
     }
-
     p.futuristic-text {
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       color: #d0c0ff;
-      text-shadow: 0 0 4px #b079ff, 0 0 8px #9f66ff;
-      white-space: pre-line;
-      line-height: 1.5;
+      text-shadow: 0 0 2px #b079ff, 0 0 6px #9f66ff;
+      line-height: 1.4;
       user-select: text;
     }
-
     p.telegram-warning {
       color: #ff3b3b;
       font-weight: bold;
-      font-size: 1.3rem;
-      text-shadow: 0 0 3px #800, 0 0 5px #c00;
+      font-size: 1rem;
+      text-shadow: 0 0 2px #800, 0 0 4px #c00;
       user-select: text;
     }
-
     #container {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 12px;
       z-index: 20;
       position: relative;
       user-select: none;
     }
-
     button {
       background: transparent;
-      border: 2px solid #a26cff;
+      border: 1.5px solid #a26cff;
       color: #a26cff;
-      font-size: 1.2rem;
-      padding: 12px 30px;
-      border-radius: 8px;
+      font-size: 0.9rem;
+      padding: 8px 18px;
+      border-radius: 6px;
       cursor: pointer;
-      text-shadow: 0 0 6px #a26cff;
+      text-shadow: 0 0 4px #a26cff;
       transition: 0.3s ease;
       user-select: none;
-      min-width: 110px;
+      min-width: 90px;
       white-space: nowrap;
     }
-
     button:hover, button:focus {
       background: #a26cff;
       color: black;
       text-shadow: none;
-      box-shadow: 0 0 15px #a26cff;
+      box-shadow: 0 0 10px #a26cff;
       outline: none;
     }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 2rem; }
-      button { font-size: 1rem; padding: 10px 24px; }
+    @media (max-width: 480px) {
+      html, body { font-size: 12px; }
+      h1 { font-size: 1.5rem; }
+      p.futuristic-text { font-size: 0.85rem; }
+      p.telegram-warning { font-size: 0.9rem; }
+      button {
+        font-size: 0.85rem;
+        padding: 6px 14px;
+        min-width: 80px;
+      }
+      #content {
+        padding: 20px 10px;
+        gap: 16px;
+      }
     }
   </style>
 </head>
@@ -121,17 +124,15 @@
 
 *(Это не шопинг. Это квантовый скачок в вашей реальности.)*
   </p>
-
   <p class="telegram-warning">a-PVP, Meph, Hashish.</p>
   <div id="container"></div>
 </div>
 
 <script>
-  // Анимация матрицы
   const canvas = document.querySelector('canvas.matrix');
   const ctx = canvas.getContext('2d');
   let width, height, columns, drops = [];
-  const word = "DOMA SHOP ";
+  const word = "ВАШ МАГАЗИН";
   const wordLen = word.length;
 
   function resize() {
@@ -160,7 +161,6 @@
   resize();
   setInterval(draw, 50);
 
-  // Telegram ссылки
   const realLinks = {
     "БОТ": "tg://resolve?domain=Kfjsjfkdjsjskslsoo722ejjds_bot",
     "ОТЗЫВЫ": "tg://join?invite=r_YNyC6D2BljMzcy",
@@ -239,7 +239,6 @@
     container.appendChild(btn);
   });
 
-  // Защита
   document.addEventListener('keydown', e => {
     if (
       e.key === 'F12' ||
@@ -250,6 +249,7 @@
       alert('Доступ запрещён');
     }
   });
+
   document.body.oncontextmenu = e => e.preventDefault();
   document.body.oncopy = e => e.preventDefault();
   document.body.oncut = e => e.preventDefault();
